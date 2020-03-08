@@ -1,0 +1,16 @@
+https://repositorio.ufsc.br/bitstream/handle/123456789/87122/206416.pdf?sequence=1&isAllowed=y
+
+https://s3.amazonaws.com/academia.edu.documents/50464641/InteliMed_uma_experincia_de_desenvolvime20161121-25364-103p9fp.pdf?response-content-disposition=inline%3B%20filename%3DInteliMed_Uma_experiencia_de_desenvolvim.pdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWOWYYGZ2Y53UL3A%2F20200308%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200308T154438Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=da9be5cd616d090ffb6621450032a354a41ed2b097cb0c052249b1b941f2f82f
+
+https://www.researchgate.net/profile/Cecilia_Flores2/publication/267950585_Uma_Experiencia_do_Uso_de_Redes_Probabilisticas_no_Diagnostico_Medico/links/54b57a2b0cf26833efd2f91a/Uma-Experiencia-do-Uso-de-Redes-Probabilisticas-no-Diagnostico-Medico.pdf
+
+https://www.unipac.br/site/bb/tcc/tcc-1f27698262e0264e86303947a63d518c.pdf
+
+http://periodicos.puc-campinas.edu.br/seer/index.php/cienciasmedicas/article/viewFile/1399/1373
+
+http://www.informaticamedica.org.br/informed/decisao.htm
+
+http://publicacoes.cardiol.br/abc/1999/7306/73060008.pdf
+
+http://repositorio.uninove.br/xmlui/bitstream/handle/123456789/525/419-797-1-RV-%20uso%20de%20sistema%20especialista.pdf?sequence=1
+
