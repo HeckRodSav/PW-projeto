@@ -1,2 +1,4 @@
 https://www.sitepoint.com/node-js-mvc-application/
 
+https://vizir.com.br/2016/06/como-estruturar-uma-aplicacao-node-js/
+
