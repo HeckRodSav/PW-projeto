@@ -12,3 +12,14 @@ Temos como referência de aplicação o Guia de Doenças e Sintomas \cite{albert
 Por outro lado, também ilustra o cenário cujo não desejamos ser vítimas, o de receber uma lista assustadora de doenças relacionadas ao seus sintomas, tais como câncer ou insuficiência renal, quando estão ligadas ao caso por poucos sintomas.
 
 
+Como citado antes, a estrutura da aplicação terá 3 camadas, cada uma sendo devidamente encapsulada e fazendo a comunicação com a outra de forma segura e sem interferir no contexto.
+
+Iniciando pelo banco de dados, consistirá em  doenças e seus tratamentos e sintomas relacionados as mesmas, sendo que pretendemos definir um valor de probabilidade para esse relacionamento, para que tenha o papel de índice de tomada de decisão para o quão provável   que o usuário tenha a doença baseado neste número. Como esse ÍNDICE DE INCIDÊNCIA será calculado ainda não está claro.
+
+Em seguida vem a camada de controlers, onde teremos a interação do banco com as informações fornecidas pelo usuário, ou seja, questões simples sobre os sintomas registrados no banco serão enviadas para o front, a resposta voltará para a controler e baseado nisso, iremos montar um mapeamento, excluindo as doenças que não incluem as afirmativas de sintomas e incluindo as que sim, até que cheguemos numa possível resposta, devolvendo para o usuário o diagnóstico e como prevenir e tratar.
+Sempre lembrando que essa avaliação de qual diagnóstico adotar, será baseada nesse índice de incidência que está em desenvolvimento e avaliação para melhor aproveitamento.
+
+
+Por fim, teremos o front, ou a interface vista pelo usuário. Será estruturada como um quiz, que apresentará questões de sim ou não para os sintomas, até que cominará no diagnóstico possível.
+
+
