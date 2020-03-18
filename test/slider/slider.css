@@ -3,7 +3,12 @@ html {
     /* background-color: #999; */
 }
 
-.switch-btn {
+
+/* p {
+    display: none;
+} */
+
+input.switch {
     /* display: none; */
     position: absolute;
     opacity: 0;
@@ -16,63 +21,99 @@ html {
     box-sizing: border-box;
 } */
 
-.switch-label:before,
-.switch-label {
+p {
+    display: none;
+}
+
+div {
+    padding: 5px;
+}
+
+label.switch:before,
+label.switch {
     text-align: center;
     border-radius: 12.5px;
-    box-shadow: inset rgba(0, 0, 0, 0.25) 0 0 5px 1px;
     /* border: solid 2px #ffffff00; */
 }
 
-.switch-label {
+.light .switch {
+    color: #222;
+    background-color: #fff;
+    box-shadow: inset rgba(0, 0, 0, 0.25) 0 0 5px 1px;
+}
+
+.dark .switch {
     color: #fff;
-    background-color: #555;
+    background-color: #222;
+    box-shadow: inset rgba(255, 255, 255, 0.5) 0 0 5px 1px;
+}
+
+.contrast *:before,
+.contrast label.switch {
+    color: #fff;
+    background-color: #000;
+    box-shadow: none !important;
+    border-radius: 0px !important;
+}
+
+label.switch {
+    /* opacity: 0.5; */
     /* width: 100px; */
     /* height: 25px; */
+    min-width: 0px;
+    min-height: 25px;
     line-height: 25px;
+    padding-right: 27px;
+    padding-left: 27px;
     /* border: solid 2px #333; */
     display: inline-block;
     vertical-align: middle;
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    -webkit-transition: all 0.75s;
-    transition: all 0.75s;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
 }
 
-.switch-label:before {
+label.switch:before {
     content: '';
+    box-shadow: inset rgba(0, 0, 0, 0.25) 0 0 5px 1px;
     position: absolute;
+    top: 2.5%;
     /* border-radius: 5px; */
-    height: 100%;
-    width: 25;
+    height: 95%;
+    min-width: calc(25px);
     display: inline-block;
     /* background-color: #333; */
     z-index: 20;
-    -webkit-transition: all 0.75s;
-    transition: all 0.75s;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
 }
 
-.switch-btn:not(:checked)+label.switch-label {
-    /* box-shadow: rgba(0, 85, 170, 0.5) 0 0 15px 1px; */
-    /* background-color: #05a; */
-    padding-right: 10px;
-    padding-left: 30px;
-}
 
-.switch-btn:checked+label.switch-label {
-    /* box-shadow: rgba(211, 105, 0, 0.5) 0 0 15px 1px; */
-    /* background-color: rgb(211, 105, 0); */
-    padding-right: 30px;
-    padding-left: 10px;
-}
+/* input.switch:not(:checked)+label.switch {
+    box-shadow: rgba(0, 85, 170, 0.5) 0 0 15px 1px;
+    background-color: #05a;
+    padding-right: 25px;
+    padding-left: 25px;
+} */
 
-.switch-btn:not(:checked)+label.switch-label:before {
-    left: 0%;
+
+/* input.switch:checked+label.switch {
+    box-shadow: rgba(211, 105, 0, 0.5) 0 0 15px 1px;
+    background-color: rgb(211, 105, 0);
+    padding-right: 25px;
+    padding-left: 25px;
+} */
+
+input.switch:not(:checked)+label.switch:before {
+    /* content: '0'; */
+    left: calc(0% + 1px);
     background-color: rgb(0, 127, 255);
 }
 
-.switch-btn:checked+label.switch-label:before {
-    left: calc(100% - 25px);
+input.switch:checked+label.switch:before {
+    /* content: '1'; */
+    left: calc(100% - 26px);
     background-color: rgb(255, 127, 0);
 }
