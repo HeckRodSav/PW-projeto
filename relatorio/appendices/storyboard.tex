@@ -32,7 +32,11 @@ Este sistema realiza a seguinte lista de tarefas:
 
 \subsection{Storyboard}
 
+O desenvolvimento front-end seguiu uma marcha dando prioridade à versão \textit{mobile}, e a partir desta foi desenvolvida a versão \textit{desktop}.
+
 \subsubsection{Versão mobile}
+
+A interface inicial, figura \ref{fig:mobile:home}, consiste em um botão central para prossegui para a próxima página, e uma faixa superior contendo um botão na lateral esquerda, para acesso ao menu, a logomarca ao centro e um botão em formato de lâmpada na lateral direita, para possível ativação de modo escuro na interface geral.
 
 \begin{figure}[htbp]
 	\centering
@@ -44,18 +48,28 @@ Este sistema realiza a seguinte lista de tarefas:
 		\caption{Tela de início.}
 		\label{fig:mobile:home}
 	\end{subfigure}
-\hfill
+	\hfill
 	\begin{subfigure}{0.24\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figure/prototype/mobile/agreeing.png}
 		\caption{Concordar com termos.}
 		\label{fig:mobile:agreeing}
 	\end{subfigure}
-\hfill
-\hspace{0.24\linewidth}
-	\caption{Interface Inicial.}
+	\hfill
+	\hspace{0.24\linewidth}
 	\label{fig:mobile:home_agreeing}
+	\caption{Interface Inicial.}
 \end{figure}
+
+Pressionando o botão central da página inicial, surge uma janela central, figura \ref{fig:mobile:agreeing}, contendo o texto ``Antes de prosseguir é necessário concordar com os temos de uso.'', logo abaixo um link de acesso para os termos de uso. Ao final da janela um botão para concordar com os termos e prosseguir.
+
+Acessando o menu lateral através do botão, a interface apresentada na figura \ref{fig:mobile:drawer} será vista, uma barra lateral, contendo uma lista de opções que levam às suas respectivas páginas: ``Início'', ``Doenças'', ``Termos de uso'' e ``Sobre''. Na base da barra é apresentada a versão do sistema.
+
+A página ``Sobre'', figura \ref{fig:mobile:about}, apresenta informações sobre o sistema e a equipe de desenvolvimento.
+
+A página ``Termo de uso'', figura \ref{fig:mobile:terms}, apresenta informações a respeito de privacidade de dados do usuário, entre outras informações cabíveis.
+
+A página ``Doenças'', figura \ref{fig:mobile:list_disease}, apresenta a listagem de doenças cadastradas no sistema, cada item da lista é um botão que leva à página associada à doença.
 
 \begin{figure}[htbp]
 	\centering
@@ -90,6 +104,17 @@ Este sistema realiza a seguinte lista de tarefas:
 	\label{fig:mobile:drawer_about_terms_list_disease}
 \end{figure}
 
+Acessando a interface de questionário, a primeira página exibida solicita a informação a respeito de sexo biológico, \ref{fig:mobile:bio_sex}, com uma nota de rodapé a respeito da razão pela qual esta informação é relevante para o sistema.
+Nesta página, apresentam-se quatro botões, ``Masculino'' e ``Feminino'', na altura central da interface e distribuídos em lados opostos da tela.
+Logo abaixo, os botões ``Voltar'' e ``Continuar'', sendo o segundo desativado até que o usuário selecione uma opção de resposta para o sistema.
+No espaço restante é apresentado uma barra visual de progresso, contendo também seu valor em porcentagem. Esta barra, e os botões ``Voltar'' e ``Continuar'' estão presentes em todas as telas durante o questionário.
+
+Seguindo a rotina de respostas, a próxima tela solicita a idade do usuário, figura \ref{fig:mobile:age}, apresentando uma caixa de texto centralizada na interface.
+
+A tela seguinte solicita a altura do usuário, figura \ref{fig:mobile:height}, a interface é equivalente à da tela anterior.
+
+A terceira questão ao usuário é sobre seu peso, figure \ref{fig:mobile:weight}, também com interface equivalente à anterior.
+
 \begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.24\linewidth}
@@ -123,6 +148,9 @@ Este sistema realiza a seguinte lista de tarefas:
 	\label{fig:mobile:bio_sex_age_height_weight}
 \end{figure}
 
+Chegando à interface mais presente no sistema, a tela de questionário de sintomas, figura \ref{fig:mobile:symptom}, o usuário responderá sim ou não para cada um dos sintomas apresentados. A disposição dos itens na tela é equivalente à tela de informação a respeito de sexo biológico, diferindo do conteúdo dos botões, ``Sim'' e ``Não'', e suas cores.
+Quando uma opção selecionado, o botão da outra opção tem sua coloração alterada para o cinza, indicando a seleção feita, ambos aos casos são apresentados nas figuras \ref{fig:mobile:symptom_no} e \ref{fig:mobile:symptom_yes}. Após selecionada uma opção, o botão de continuar é ativado.
+
 \begin{figure}[htbp]
 	\centering
 	\hspace{0.11\linewidth}
@@ -152,6 +180,10 @@ Este sistema realiza a seguinte lista de tarefas:
 	\caption{Interface durante questionário de sintomas.}
 	\label{fig:mobile:symptom_yes_no}
 \end{figure}
+
+Depois de responder todas as perguntas a respeito de sintomas, o usuário é levado à tela de resultados, figura \ref{fig:mobile:results}, onde é apresentada uma lista das doenças mais prováveis com sua probabilidade em porcentagem, segundo as respostas. Após a lista, há um botão ``Mostrar mais'' para exibir mais resultados na lista. Logo em seguida, um botão ``O que estes resultados significam'', que leva à uma página, figure \ref{fig:mobile:meaning}, explicando o significado dos valores de porcentagem e a relevância de procurar um profissional para um diagnóstico mais preciso.
+
+Na lista de doenças, é possível selecionar uma doença e abrir uma pequena janela com um resumo de informações a respeito, figura \ref{fig:mobile:this_disease}, à base da janela é possível acessar a página completa da doença, \ref{fig:mobile:disease_page}.
 
 \begin{figure}[htbp]
 	\centering
@@ -186,6 +218,8 @@ Este sistema realiza a seguinte lista de tarefas:
 	\label{fig:mobile:results_this_disease_disease_page_meaning}
 \end{figure}
 
+A figura \ref{fig:mobile:story} apresenta o diagrama de um \textit{storyboard} para a versão \textit{mobile} do sistema.
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\linewidth]{figure/prototype/mobile/storyboard.png}
@@ -194,6 +228,12 @@ Este sistema realiza a seguinte lista de tarefas:
 \end{figure}
 
 \subsubsection{Versão desktop}
+
+Todas as telas da versão \textit{mobile} estão presentes na versão \textit{desktop} com pequenas adaptações de interface.
+
+O menu lateral, normalmente oculto na versão \textit{mobile} está normalmente presente na versão \textit{desktop}, e pode ser ocultado pelo botão de menu lateral. A figura \ref{fig:desktop:home} apresenta a interface padrão com a barra lateral, enquanto a figure \ref{fig:desktop:drawer} apresenta a interface com o menu lateral oculto.
+
+O diagrama de \textit{storyboard} equivalente à versão \textit{desktop} está presente na figura \ref{fig:desktop:story}.
 
 \begin{figure}[htbp]
 	\centering
