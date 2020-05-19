@@ -1,0 +1,202 @@
+:root {
+	--header-height: 50px;
+	--color-heavy: #558B2F;
+	--color-heavy-gray: #757575;
+	--color-medium: #8BC34A;
+	--color-light: #A5D6A7;
+	--color-yes: #FF7043;
+	--color-no: #42A5F5;
+}
+
+html, body {
+	overflow-x: hidden;
+}
+
+body {
+	position: relative;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+input {
+	text-align: center;
+}
+
+.the-logo {
+	text-align: center;
+	font-family: 'Cinzel Decorative', cursive;
+	font-size: 35px;
+}
+
+.main{
+	height: calc(100vh - var(--header-height));
+}
+
+p {
+	text-align: justify;
+}
+
+.btn-hw{
+	min-height: calc(var(--header-height)*2);
+	border-radius: calc(var(--header-height) * 0.5);
+	font-size: 1.5em;
+}
+
+.btn-hw-sm{
+	min-height: calc(var(--header-height)*1);
+	border-radius: calc(var(--header-height) * 0.5);
+	font-size: 1.5em;
+}
+
+
+#title{
+	text-align: center;
+	background-color: var(--color-light);
+	border-radius: 0 0 calc(var(--header-height) * 0.5) calc(var(--header-height) * 0.5);
+}
+
+.centering{
+	text-align: center;
+}
+
+.header{
+	/* margin-left: 5px;
+	margin-right: 5px; */
+	height: var(--header-height);
+}
+
+.header div spam{
+	margin: auto auto;
+}
+
+.question {
+	font-size: 1.5em;
+}
+
+.frame{
+	border: solid 2px red;
+}
+
+.color-heavy{
+	background-color: var(--color-heavy);
+}
+
+.border-heavy{
+	border: solid 2px var(--color-heavy);
+}
+
+.color-medium{
+	background-color: var(--color-medium);
+}
+
+.color-light{
+	background-color: var(--color-light);
+}
+
+.color-clear{
+	background-color: white;
+}
+
+.color-yes{
+	background-color: var(--color-yes);
+}
+
+.color-no{
+	background-color: var(--color-no);
+}
+
+.color-heavy-gray{
+	background-color: var(--color-heavy-gray);
+}
+
+.v-divider {
+	height: 10%;
+}
+
+.v-divider-sm {
+	height: 2.5%;
+}
+
+#collapse-box .row{
+	padding: 0;
+	margin: 0;
+}
+
+#toggler{
+	position: fixed;
+	top: var(--header-height);
+	left: 0;
+	z-index: 2;
+	width: 250px; /*example + never use min-width with this solution */
+	height: calc(100vh - var(--header-height));
+}
+
+/* #toggler .row { */
+	/* border: solid 1px blue; */
+/* } */
+
+#toggler>.row {
+	/* border: solid 1px red; */
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	font-size: 1.3em;
+}
+
+
+#toggler>ul li:not(:last-child){
+	margin-top: 0.5em;
+}
+
+#toggler>ul li:last-child{
+	position: absolute;
+	bottom: 10px;
+	width: 100%;
+	margin-bottom: 30px;
+}
+
+#toggler>ul li:last-child>a{
+	width: 100%;
+	text-align: center;
+}
+
+#toggler>ul li a svg,
+.collapse a button svg{
+	margin: 0 10px;
+}
+
+ul {
+    list-style-type: disc !important;
+    padding-left:1em !important;
+    margin-left:1em;
+}
+
+.whole-screen{
+	overflow-y: hidden;
+	overflow-x: hidden;
+	position: absolute;
+	top: var(--header-height);
+	margin: 0;
+
+	z-index: 1;
+	height: calc(100vh - var(--header-height));
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+.round-border-hw {
+	border-radius: calc(var(--header-height) * 0.5);
+}
+
+#collapse-box .text-box {
+	text-align: justify;
+	padding: 1em ;
+}
+
+.breath-before{
+	margin-top: 1em;
+}
+
+/* a.btn{
+
+	padding: 25% 0;
+} */
