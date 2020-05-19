@@ -20,9 +20,9 @@ $(document).ready(()=>{
 
 	$("#input-area").on("keyup", function(){
 		if($(this).val() != ""){
-			$(".disabled").removeClass("disabled");
+			$("#next-button").removeClass("disabled");
 		} else {
-			$(".disabled").addClass("disabled");
+			$("#next-button").addClass("disabled");
 		}
 	});
 
