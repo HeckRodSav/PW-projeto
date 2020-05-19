@@ -20,14 +20,13 @@ $(document).ready(()=>{
 
 	$("#input-area").on("keyup", function(){
 		if($(this).val() != ""){
-			$("#next-button").removeClass("disabled");
+			if(Number($(this).val())>0){
+				$("#next-button").removeClass("disabled");
+			} else {
+				$("#next-button").addClass("disabled");
+			}
 		} else {
 			$("#next-button").addClass("disabled");
 		}
 	});
-
-	$(".show-more").on("click", ()=>{
-
-	});
-
 });
