@@ -1,0 +1,56 @@
+\section{Prototipação de média fidelidade}
+
+\subsection{Dificuldades e simplificações na interface front-end}
+
+Ao longo do desenvolvimento das páginas front-end, algumas dificuldades foram encontradas, bem como detalhes que poderiam ser simplificados.
+
+\subsubsection{Dificuldades encontradas}
+
+\paragraph{Barra lateral}
+A principal dificuldade encontrada foi relacionada a barra lateral, empenhando horas de pesquisa de um método sobre como colapsar a barra lateral de maneira mais natural ao usuário conforme o modelo mais adotado atualmente: a barra lateral corre horizontalmente.
+
+A solução encontrada foi simplesmente deixar a barra lateral correndo verticalmente, porém sua animação ficou limitada a altura mínima dos itens em seu interior.
+
+\paragraph{Fundo escurecido}
+
+Na proposta de baixa fidelidade, apêndice \ref{apdx:lofi}, é possível notar que em algumas páginas, quando um item tomasse a frente da interface, os itens ao fundo seriam escurecidos.
+A dificuldade envolvida foi relacionada a adequar o elemento HTML ao tamanho lateral da página, devido à margem horizontal pré estabelecida pelo Bootstrap 4.
+
+A solução foi encontrada numa página do StackOveflow, indicando esta característica no elemento com a classe selecionada.
+
+Houve um caso especial onde esta característica foi descartada.
+Na versão mobile, quando a barra lateral está visível, o protótipo não apresenta a alteração do fundo.
+
+\subsubsection{Simplificações}
+
+\paragraph{Questionário de sintomas}
+
+Na versão apresentada anteriormente, apêndice \ref{apdx:lofi}, na interface durante o questionário de sintomas, figuras \ref{fig:mobile:symptom} e \ref{fig:desktop:symptom}, as diferentes opções da interface são apresentadas como telas separadas.
+Na implementação do protótipo atual, estas opções fazem parte da mesma página.
+
+\paragraph{Questionário sobre sexo biológico}
+
+Bem como no questionário de sintomas, a pergunta sobre sexo biológico, figuras \ref{fig:mobile:bio_sex} e \ref{fig:desktop:bio_sex}, ganha a mesma propriedade visual para o caso de dois botões.
+
+\paragraph{Botão de continuar}
+
+Para cada interface com botão de continuar, este foi apropriadamente bloqueado enquanto uma resposta coerente não fosse dada.
+
+\subsection{Video de demonstração}\label{subsec:demo}
+
+Foram gravados dois vídeos para demonstração do sistema.
+
+\subsubsection{Versão Desktop}
+
+\href{https://youtu.be/cfdYXQWT3AI}{\emph{Link} para vídeo demonstrativo da versão Desktop.}
+
+\subsubsection{Versão Mobile}
+
+\href{https://youtu.be/rhEI6m4BFxc}{\emph{Link} para vídeo demonstrativo da versão Mobile.}
+
+\subsection{Repositório do projeto}
+
+O projeto pode ser encontrado em \href{https://github.com/HeckRodSav/PW-projeto}{<https://github.com/HeckRodSav/PW-projeto>}.
+Os arquivos deste versão estão disponível na pasta /aplicacao/front/ do repositório.
+
+A gravação dos vídeos de demonstração, subseção \ref{subsec:demo}, foi feita a partir da página \emph{github.io} do projeto, acessível por \href{https://heckrodsav.github.io/PW-projeto/aplicacao/front/}{<https://heckrodsav.github.io/PW-projeto/aplicacao/front/>}
