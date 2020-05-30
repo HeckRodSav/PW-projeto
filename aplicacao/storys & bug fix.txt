@@ -1,0 +1,8 @@
+bug fix:
+
+Mudar navbar que ta fingindo ser modal para uma modal descente.
+tentar alterar íconies para padrão bootstrap.
+mudar nome do botão de toggler para algo que faça sentido.
+ver qual propriedade dos botões estão fazendo eles estarem pressionados forever
+botão de voltar (criar funcionalidade no back para isso e não atalho para o do navegador)
+
