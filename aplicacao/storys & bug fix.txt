@@ -1,5 +1,8 @@
 bug fix:
 
-tentar alterar íconies para padrão bootstrap.
 botão de voltar (criar funcionalidade no back para isso e não atalho para o do navegador)
 criar template geral para todas as páginas
+
+others:
+
+tentar alterar ícones para padrão bootstrap. -> O bootstrap parou de usar glyphicons na versao 4
