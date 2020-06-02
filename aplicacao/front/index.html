@@ -118,12 +118,20 @@
 			</ul>
 		</div>
 
-		<div class="row justify-content-center whole-screen collapse" id="collapse-box"  data-toggle="collapse" data-target="#collapse-box" aria-expanded="false" aria-controls="collapse-box">
-			<div class="col-11 col-sm-6 col-lg-3 align-self-center">
-					<div class="color-light round-border-hw">
-						<div class="container text-box">
-							Antes de prosseguir é necessário concordar com os termos de uso.
-						</div>
+		<!-- Modal -->
+		<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content color-light round-border-hw">
+					<!-- <div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Espere um pouco</h5>
+					</div> -->
+					<div class="modal-body text-box">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+						<span aria-hidden="true">&times;</span>
+						</button>
+						Antes de prosseguir é necessário concordar com os termos de uso.
+					</div>
+					<div class="modal-footer">
 						<a href="./terms.html" class="nav-link color-clear btn btn-block btn-hw-sm" role="button">
 							<svg class="bi bi-book" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
 								xmlns="http://www.w3.org/2000/svg">
@@ -140,6 +148,7 @@
 							Aceitar
 						</a>
 					</div>
+				</div>
 			</div>
 		</div>
 
@@ -154,12 +163,13 @@
 				<div class="row v-divider"></div>
 				<div class="row justify-content-center">
 					<div class="col-8 col-md-6 col-lg-3">
-						<button class="btn btn-hw color-medium btn-block" data-toggle="collapse" data-target="#collapse-box" aria-expanded="false" aria-controls="collapse-box">Começar</button>
+						<button type="button" class="btn btn-hw color-medium btn-block" data-toggle="modal" data-target="#modalExemplo" aria-expanded="false">
+							Começar
+						</button>
 					</div>
 				</div>
 			</div>
 		</main>
-
 
 	</body>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

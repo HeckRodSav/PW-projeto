@@ -1,6 +1,5 @@
 bug fix:
 
-Mudar navbar que ta fingindo ser modal para uma modal descente.
 tentar alterar íconies para padrão bootstrap.
 botão de voltar (criar funcionalidade no back para isso e não atalho para o do navegador)
 criar template geral para todas as páginas
