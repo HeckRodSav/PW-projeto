@@ -6,3 +6,10 @@ criar template geral para todas as páginas
 others:
 
 tentar alterar ícones para padrão bootstrap. -> O bootstrap parou de usar glyphicons na versao 4
+
+plan:
+
+db:
+    1:1 - doenças:informações
+    1:1 - sintomas:definições
+    n:n - sintomas:doenças
