@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('./html_head.ejs') %>
+
+<body>
+
+<%- include('./page_header.ejs') %>
+
+<%- include('./page_sidebar.ejs') %>
+
+    <% if (modal) { %>
+        <!-- Modal -->
+<%- include( `../${modal}` ) %>
+    <% } %>
+
+    <main role="main" class="main row justify-content-around container-flex">
+<%- include( `../${page}` ) %>
+    </main>
+
+</body>
+
+<%- include('./html_foot.ejs') %>
+
+</html>

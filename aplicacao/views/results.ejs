@@ -1,0 +1,20 @@
+					<% for( let i = 0; i < diseases.length; i++ ) { %>
+
+						<%- include('shared/disease_item', diseases[i]) %>
+
+					<% } %>
+
+					<div class="row v-divider-sm"></div>
+					<div class="row justify-content-center">
+						<div class="col-8 col-md-6 col-lg-3">
+							<button class="btn btn-hw-sm color-light btn-block show-more">Mostrar mais</button>
+						</div>
+					</div>
+					<div class="row v-divider-sm"></div>
+					<div class="row justify-content-center">
+						<div class="col-8 col-md-6 col-lg-3">
+							<a href="./meaning" class=" nav-link btn btn-hw-sm color-heavy btn-block" role="button">
+								O que estes resultados significam
+							</a>
+						</div>
+					</div>

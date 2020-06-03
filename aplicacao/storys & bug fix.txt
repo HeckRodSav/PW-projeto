@@ -2,6 +2,8 @@ bug fix:
 
 botão de voltar (criar funcionalidade no back para isso e não atalho para o do navegador)
 criar template geral para todas as páginas
+input de texto continua trabvado se você usa os botões de incrise e decrise
+botões com comportamento radio precisam de indicador de seleção com 'aria-pressed'
 
 others:
 
