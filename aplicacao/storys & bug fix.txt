@@ -10,22 +10,20 @@ tentar alterar ícones para padrão bootstrap. -> O bootstrap parou de usar glyp
 plan:
 
 db:
-    1:1 - doenças:informações(
-string nome doença,
-string informações,
-* restrição de sexo,[pode ser um bit ou int que significaria, ou mesmo um hcar]
-int talvez uma idade mínima 
-int talvez uma idade máxima
-)
+    doenças(
+        string nome doença,
+        string informações,
+        * restrição de sexo,[pode ser um bit ou int que significaria, ou mesmo um char]
+        int talvez uma idade mínima
+        int talvez uma idade máxima
+    )
 
-
-    1:1 - sintomas:definições(
-string nome,
-string definição,
-bool talvez uma flag de crítico
-)
-
+    sintomas(
+        string nome,
+        string definição,
+        bool talvez uma flag de crítico
+    )
 
     n:n - sintomas:doenças(
-float um possível indicador de criticidade desse sintoma na doença
-)
+        float um possível indicador de criticidade desse sintoma na doença
+    )
