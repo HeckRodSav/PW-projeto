@@ -49,6 +49,11 @@ if (connectLivereload !== null) {
 // static route
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
+// errors throwers
+app.get('/shouldnotwork', (req,res)=>{
+    throw Error('I just failed');
+});
+
 app.use('/:page/', (req, res, next) => {
     console.log(`\\${req.params.page}`);
     const page_list = ['home', 'sex', 'age', 'height', 'weight', 'symptom', 'results', 'about', 'terms', 'diseases','meaning'];
@@ -127,10 +132,16 @@ app.use('/:page/', (req, res, next) => {
                 options['title'] = 'Doenças';
                 options.content = 'diseases';
                 options.diseases = [
+                    { name: "Doença Q", value: "", tag: "Q_disease" },
+                    { name: "Doença R", value: "", tag: "R_disease" },
+                    { name: "Doença S", value: "", tag: "S_disease" },
+                    { name: "Doença T", value: "", tag: "T_disease" },
+                    { name: "Doença U", value: "", tag: "U_disease" },
+                    { name: "Doença V", value: "", tag: "V_disease" },
+                    { name: "Doença W", value: "", tag: "W_disease" },
                     { name: "Doença X", value: "", tag: "X_disease" },
                     { name: "Doença Y", value: "", tag: "Y_disease" },
                     { name: "Doença Z", value: "", tag: "Z_disease" },
-                    { name: "Doença W", value: "", tag: "W_disease" }
                 ];
                 break;
             default:
@@ -149,15 +160,25 @@ app.use('/:page/', (req, res, next) => {
 
 // error handling middleware
 app.use((err, req, res, next) => {
+    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
+    options['page'] = 'shared/entitled';
+    options['title'] = 'Erro interno!';
+    options.content = 'error';
     console.log(err);
     console.error(err.stack);
+    res.status(500).render('./shared/default', options);
     // res.status(500).sendFile(ERROR_PATH);
 });
 
 // default route after everything fails
 app.use('/', (req, res) => {
+    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
+    options['page'] = 'shared/entitled';
+    options['title'] = 'Página não encontrada!';
+    options.content = 'not_found';
     // res.status(404).sendFile(NOT_FOUND_PATH);
-    res.status(404).send('Path not found!');
+    // res.status(404).send('Path not found!');
+    res.status(404).render('./shared/default', options);
     res.end()
 });
 
