@@ -22,8 +22,9 @@ const connectLivereload = (() => {
 if (livereload !== null) {
     const liveReloadServer = livereload.createServer();
     const watcher = liveReloadServer.watch(__dirname);
+    console.log(__dirname);
     watcher.on("change", (arg) => {
-        console.log(`Change: ${new Date().toLocaleString()} - ${arg.replace(__dirname, ".")}`);
+        console.log(`Change: ${new Date().toLocaleString()} - ${arg.replace(__dirname, "")}`);
     });
 }
 
