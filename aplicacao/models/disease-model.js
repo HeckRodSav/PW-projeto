@@ -1,6 +1,6 @@
 "use strict";
 
-const colls = require('./db-connect.js').colls;
+const colls = require('../DAO/db-connect.js').colls;
 
 /**
  * Data object or transfer object
@@ -13,16 +13,6 @@ function Disease(name, tag, value, information, restriction) {
     this.value = value;
     this.information = information;
     this.restriction = restriction;
-}
-
-function nextId(idReady) {
-    colls.sequences.findOneAndUpdate({name: 'disease_id'}, {$inc: {value: 1}},
-        (err, res) => {
-            if (err !== null) {
-                console.log(err);
-            }
-            idReady(res.value.value);
-        });
 }
 
 /**
