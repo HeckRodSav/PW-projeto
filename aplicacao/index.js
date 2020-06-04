@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const process = require('process');
 
-const dbConnect = require('./models/db-connect');
+const dbConnect = require('./DAO/db-connect');
 const Conf = require('./settings/config.json');
 
 const diesaseController = require('./controllers/disease-controller');

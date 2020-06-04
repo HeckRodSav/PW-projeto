@@ -1,11 +1,13 @@
+				<% for( let i = 0; i < diseases.length; i++ ) { %>
 				<div class="row v-divider-sm"></div>
 				<div class="row justify-content-center">
 					<div class="col-8 col-md-6 col-lg-3">
-						<button class="btn btn-hw-sm color-medium btn-block" data-toggle="modal" data-target="#<%= tag %>" aria-expanded="false">
-							<%= name %>
-							<% if (value) { %>
-							<span class="value"><%= value %>%</span>
+						<button class="btn btn-hw-sm color-medium btn-block" data-toggle="modal" data-target="#modal_<%= i %>" aria-expanded="false">
+							<%= diseases[i].name %>
+							<% if (diseases[i].value) { %>
+							<span class="value"><%= diseases[i].value %>%</span>
 							<% } %>
 						</button>
 					</div>
 				</div>
+				<% } %>
