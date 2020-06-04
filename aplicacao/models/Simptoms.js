@@ -6,3 +6,4 @@ name: {type: String, required: true, max: 100},
 definition: {type: String, required: true, max: 500},
 
 });
+module.exports = mongoose.model('Simptoms', SimptomsSchema);
