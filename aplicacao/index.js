@@ -5,6 +5,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const process = require('process');
 
+const dbConnect = require('./models/db-connect');
+const Conf = require('./settings/config.json');
+
+const diesaseController = require('./controllers/disease-controller');
+
 const livereload = (() => {
     var ret = null;
     try { ret = require('livereload'); }
@@ -37,8 +42,12 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, 'views'));
 
 const port = 4519;
-app.listen(port, () => {
-    console.log(`Servidor em execução port ${port}`);
+
+dbConnect.connect(() => {
+    console.log('Database connected');
+    app.listen(port, () => {
+        console.log(`Servidor em execução port ${port}`);
+    });
 });
 
 if (connectLivereload !== null) {
@@ -53,18 +62,21 @@ app.get('/shouldnotwork', (req,res)=>{
     throw Error('I just failed');
 });
 
+
+
 app.use('/:page/', (req, res, next) => {
-    console.log(`\\${req.params.page}`);
+    const current_page = req.params.page;
+    console.log(`\\${current_page}`);
     const page_list = ['home', 'sex', 'age', 'height', 'weight', 'symptom', 'results', 'about', 'terms', 'diseases','meaning'];
     const modal_list = { 'home': 'home_modal', 'diesase': 'diesase_modal' }
 
 
-    if (!page_list.includes(req.params.page)) next();
+    if (!page_list.includes(current_page)) next();
     else {
         var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
-        switch (req.params.page) {
+        switch (current_page) {
             case 'sex':
-                options['page'] = 'shared/question';
+                options['page'] = 'layouts/question';
                 options['question'] = 'sex';
                 options['title'] = 'Sexo biológico*.';
                 options['footnote'] = 'sex_footnote';
@@ -72,35 +84,35 @@ app.use('/:page/', (req, res, next) => {
                 options.percent = 5;
                 break;
             case 'age':
-                options['page'] = 'shared/question';
+                options['page'] = 'layouts/question';
                 options['question'] = 'age';
                 options['title'] = 'Sua idade em anos.';
                 options.next = 'height';
                 options.percent = 10;
                 break;
             case 'height':
-                options['page'] = 'shared/question';
+                options['page'] = 'layouts/question';
                 options['question'] = 'height';
                 options['title'] = 'Sua altura em m.';
                 options.next = 'weight';
                 options.percent = 15;
                 break;
             case 'weight':
-                options['page'] = 'shared/question';
+                options['page'] = 'layouts/question';
                 options['question'] = 'weight';
                 options['title'] = 'Seu peso em kg.';
                 options.next = 'symptom';
                 options.percent = 20;
                 break;
             case 'symptom':
-                options['page'] = 'shared/question';
+                options['page'] = 'layouts/question';
                 options['question'] = 'symptom';
                 options['title'] = 'Você apresentou sintôma X?';
                 options.next = 'results';
                 options.percent = 25;
                 break;
             case 'results':
-                options['page'] = 'shared/entitled';
+                options['page'] = 'layouts/entitled';
                 options['title'] = 'Resultados';
                 options['content'] = 'results';
                 options.diseases = [
@@ -112,22 +124,22 @@ app.use('/:page/', (req, res, next) => {
                 options.modal = 'results_modal';
                 break;
             case 'about':
-                options['page'] = 'shared/entitled';
+                options['page'] = 'layouts/entitled';
                 options['title'] = 'Sobre';
                 options.content = 'about';
                 break;
             case 'terms':
-                options['page'] = 'shared/entitled';
+                options['page'] = 'layouts/entitled';
                 options['title'] = 'Termos de uso';
                 options.content = 'terms';
                 break;
             case 'meaning':
-                options['page'] = 'shared/entitled';
+                options['page'] = 'layouts/entitled';
                 options['title'] = 'O que significam estes resultados';
                 options.content = 'meaning';
                 break;
             case 'diseases':
-                options['page'] = 'shared/entitled';
+                options['page'] = 'layouts/entitled';
                 options['title'] = 'Doenças';
                 options.content = 'diseases';
                 options.diseases = [
@@ -144,12 +156,11 @@ app.use('/:page/', (req, res, next) => {
                 ];
                 break;
             default:
-                console.log("in default");
-                options.page = req.params.page;
-                options.modal = (modal_list[req.params.page] !== undefined ? modal_list[req.params.page] : '');
+                options.page = current_page;
+                options.modal = (modal_list[current_page] !== undefined ? modal_list[current_page] : '');
         }
-        console.log(options);
-        res.render('./shared/default', options);
+        // console.log(options);
+        res.render('./layouts/default', options);
     }
     res.end();
 });
@@ -160,30 +171,31 @@ app.use('/:page/', (req, res, next) => {
 // error handling middleware
 app.use((err, req, res, next) => {
     var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
-    options['page'] = 'shared/entitled';
+    options['page'] = 'layouts/entitled';
     options['title'] = 'Erro interno!';
     options.content = 'error';
     console.log(err);
     console.error(err.stack);
-    res.status(500).render('./shared/default', options);
+    res.status(500).render('./layouts/default', options);
     // res.status(500).sendFile(ERROR_PATH);
 });
 
 // default route after everything fails
 app.use('/', (req, res) => {
     var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
-    options['page'] = 'shared/entitled';
+    options['page'] = 'layouts/entitled';
     options['title'] = 'Página não encontrada!';
     options.content = 'not_found';
-    // res.status(404).sendFile(NOT_FOUND_PATH);
-    // res.status(404).send('Path not found!');
-    res.status(404).render('./shared/default', options);
+    res.status(404).render('./layouts/default', options);
     res.end()
 });
 
 // register exitting log
 process.on('exit', (code) => {
     console.log(`\nServer exiting with code ${code}`);
+    dbConnect.disconnect(() => {
+        console.log('Database disconnected');
+    });
 });
 
 process.on('SIGINT', process.exit);
