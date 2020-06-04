@@ -6,9 +6,11 @@ const colls = require('./db-connect.js').colls;
  * Data object or transfer object
  *
  */
-function Disease(name, information, restriction) {
+function Disease(name, tag, value, information, restriction) {
     this.id = null;
     this.name = name;
+    this.tag = tag;
+    this.value = value;
     this.information = information;
     this.restriction = restriction;
 }
@@ -47,6 +49,8 @@ DiseasesDAO.toDoc = function (disease) {
     return {
         id: disease.id,
         name: disease.name,
+        tag: disease.tag,
+        value: disease.value,
         information: disease.information,
         restriction: disease.restriction
     }
@@ -60,6 +64,8 @@ DiseasesDAO.toObj = function(doc) {
 
     disease.id = doc.id;
     disease.name = doc.name;
+    disease.tag = doc.tag;
+    disease.value = doc.value;
     disease.information = doc.information;
     disease.restriction = doc.restriction;
 

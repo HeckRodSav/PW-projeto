@@ -62,7 +62,7 @@ app.get('/shouldnotwork', (req,res)=>{
     throw Error('I just failed');
 });
 
-
+app.use('/disease/', diesaseController.diseaseList)
 
 app.use('/:page/', (req, res, next) => {
     const current_page = req.params.page;

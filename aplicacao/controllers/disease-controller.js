@@ -11,7 +11,16 @@ exports.list = (req, res) => {
         res.render('list', {diseases: diseases}));
 };
 
-exports.diseaseList =
+exports.diseaseList = (req, res) => {
+    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
+    options['page'] = 'layouts/entitled';
+    options['title'] = 'Doenças';
+    options.content = 'diseases';
+    model.DiseasesDAO.listAll( (diseases) => {
+        options.diseases = diseases;
+        res.render('./layouts/default', options);
+    });
+};
 
 exports.addForm = (req, res) => {
     res.render('add', {disease: new model.UserProfile()});

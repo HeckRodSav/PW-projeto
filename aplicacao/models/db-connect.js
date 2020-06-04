@@ -28,6 +28,7 @@ exports.connect = (connectionReady) => {
             exports.colls.profiles = db.collection(dbConf.colls.profiles);
             exports.colls.sequences = db.collection(dbConf.colls.sequences);
             exports.colls.admins = db.collection(dbConf.colls.admins);
+            exports.colls.diseases = db.collection(dbConf.colls.diseases);
             connectionReady();
         } else {
             console.log('Failed to connect to the db');
