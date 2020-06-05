@@ -2,6 +2,8 @@
 
 const model = require('../models/symptom-model.js');
 
+// var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
+
 exports.GetQuestion = (req, res) => {
 //retorna a view montando a questão com o objeto de sintoma que esse controler recebe no res
 

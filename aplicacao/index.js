@@ -58,7 +58,7 @@ if (connectLivereload !== null) {
 }
 
 // 3rd-party middlwares
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // static route
@@ -90,7 +90,7 @@ app.get('/:page/', (req, res, next) => {
 
     if (!page_list.includes(current_page)) next();
     else {
-        var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [], raw: '' };
+        var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
         switch (current_page) {
             case 'sex':
                 options['page'] = 'layouts/question';
@@ -127,16 +127,17 @@ app.get('/:page/', (req, res, next) => {
                 options['title'] = 'Você apresentou sintôma X?';
                 options.next = 'results';
                 options.percent = 25;
+                options.symptomId = 'test';
                 break;
             case 'results':
                 options['page'] = 'layouts/entitled';
                 options['title'] = 'Resultados';
                 options['content'] = 'results';
                 options.diseases = [
-                    { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral"  },
-                    { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral"  },
-                    { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral"  },
-                    { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral"  }
+                    { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral" },
+                    { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral" },
+                    { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral" },
+                    { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral" }
                 ];
                 options.modal = 'results_modal';
                 break;

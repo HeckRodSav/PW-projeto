@@ -3,20 +3,20 @@
 const model = require('../models/disease-model.js');
 
 exports.diseaseListPage = (req, res) => {
-    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [], raw: '' };
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
     options['page'] = 'layouts/entitled';
     options['title'] = 'Doenças';
     options.content = 'layouts/disease_list';
-    model.DiseasesDAO.listAll( (diseases) => {
+    model.DiseasesDAO.listAll((diseases) => {
         options.diseases = diseases;
         res.render('./layouts/default', options);
     });
 };
 
 exports.diseasePage = (req, res, next) => {
-    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [], raw: '' };
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
     console.log(req.params.code);
-    model.DiseasesDAO.findById(req.params.code, diseases =>{
+    model.DiseasesDAO.findById(req.params.code, diseases => {
         if (diseases !== null) {
             console.log(diseases);
             options['page'] = 'layouts/entitled';
