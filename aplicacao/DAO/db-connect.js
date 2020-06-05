@@ -25,10 +25,8 @@ exports.connect = (connectionReady) => {
     client.connect((err) => {
         if (err === null) {
             let db = client.db(dbConf.db);
-            exports.colls.profiles = db.collection(dbConf.colls.profiles);
-            exports.colls.sequences = db.collection(dbConf.colls.sequences);
-            exports.colls.admins = db.collection(dbConf.colls.admins);
             exports.colls.diseases = db.collection(dbConf.colls.diseases);
+            exports.colls.symptoms = db.collection(dbConf.colls.symptoms);
             connectionReady();
         } else {
             console.log('Failed to connect to the db');

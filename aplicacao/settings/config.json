@@ -3,11 +3,8 @@
         "url": "mongodb://localhost:27017",
         "db": "heathweb",
         "colls": {
-            "profiles": "profiles",
-            "sequences": "sequences",
-            "admins": "admins",
-            "sessions": "sessions",
-            "diseases": "diseases"
+            "diseases": "diseases",
+            "symptoms": "symptoms"
         }
     }
 }
