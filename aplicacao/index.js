@@ -8,8 +8,10 @@ const process = require('process');
 const dbConnect = require('./DAO/db-connect');
 const Conf = require('./settings/config.json');
 
-const diesaseController = require('./controllers/disease-controller');
+const diseaseController = require('./controllers/disease-controller');
+// const symptomsController = require('./controllers/symptoms-controller');
 const homeController = require('./controllers/home-controller');
+const questionnaireController = require('./controllers/questionnaire-controller');
 
 const livereload = (() => {
     var ret = null;
@@ -55,31 +57,39 @@ if (connectLivereload !== null) {
     app.use(connectLivereload());
 }
 
+// 3rd-party middlwares
+app.use(bodyParser.urlencoded({extended: true}));
+
+
 // static route
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // errors throwers
-app.get('/shouldnotwork', (req,res)=>{
+app.get('/shouldnotwork', (req, res) => {
     throw Error('I just failed');
 });
 
-app.use('/home/', homeController.homePage);
-app.use('/meaning/', homeController.meaningPage);
-app.use('/terms/', homeController.termsPage);
-app.use('/about/', homeController.aboutPage);
-app.use('/disease/', diesaseController.diseaseList);
+app.get('/home/', homeController.homePage);
+app.get('/meaning/', homeController.meaningPage);
+app.get('/terms/', homeController.termsPage);
+app.get('/about/', homeController.aboutPage);
+
+app.get('/disease', diseaseController.diseaseListPage);
+app.get('/disease/:code/', diseaseController.diseasePage);
+
+app.post('/questionnaire/answer', questionnaireController.Answer)
 
 
-app.use('/:page/', (req, res, next) => {
+app.get('/:page/', (req, res, next) => {
     const current_page = req.params.page;
     console.log(`\\${current_page}`);
-    const page_list = ['home', 'sex', 'age', 'height', 'weight', 'symptom', 'results', 'about', 'terms', 'diseases','meaning'];
+    const page_list = ['home', 'sex', 'age', 'height', 'weight', 'symptom', 'results', 'about', 'terms', 'diseases', 'meaning', 'X_disease'];
     const modal_list = { 'home': 'home_modal', 'diesase': 'diesase_modal' }
 
 
     if (!page_list.includes(current_page)) next();
     else {
-        var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
+        var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [], raw: '' };
         switch (current_page) {
             case 'sex':
                 options['page'] = 'layouts/question';
@@ -122,10 +132,10 @@ app.use('/:page/', (req, res, next) => {
                 options['title'] = 'Resultados';
                 options['content'] = 'results';
                 options.diseases = [
-                    { name: "Doença X", value: "90", tag: "X_disease" },
-                    { name: "Doença Y", value: "80", tag: "Y_disease" },
-                    { name: "Doença Z", value: "70", tag: "Z_disease" },
-                    { name: "Doença W", value: "60", tag: "W_disease" }
+                    { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral"  },
+                    { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral"  },
+                    { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral"  },
+                    { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral"  }
                 ];
                 options.modal = 'results_modal';
                 break;
@@ -147,19 +157,27 @@ app.use('/:page/', (req, res, next) => {
             case 'diseases':
                 options['page'] = 'layouts/entitled';
                 options['title'] = 'Doenças';
-                options.content = 'diseases';
+                options.content = 'layouts/disease_list';
                 options.diseases = [
-                    { name: "Doença Q", value: "", tag: "Q_disease" },
-                    { name: "Doença R", value: "", tag: "R_disease" },
-                    { name: "Doença S", value: "", tag: "S_disease" },
-                    { name: "Doença T", value: "", tag: "T_disease" },
-                    { name: "Doença U", value: "", tag: "U_disease" },
-                    { name: "Doença V", value: "", tag: "V_disease" },
-                    { name: "Doença W", value: "", tag: "W_disease" },
-                    { name: "Doença X", value: "", tag: "X_disease" },
-                    { name: "Doença Y", value: "", tag: "Y_disease" },
-                    { name: "Doença Z", value: "", tag: "Z_disease" },
+                    { name: "Doença Q", value: "", id: "Q_disease", information: "Q é uma doença viral" },
+                    { name: "Doença R", value: "", id: "R_disease", information: "R é uma doença viral" },
+                    { name: "Doença S", value: "", id: "S_disease", information: "S é uma doença viral" },
+                    { name: "Doença T", value: "", id: "T_disease", information: "T é uma doença viral" },
+                    { name: "Doença U", value: "", id: "U_disease", information: "U é uma doença viral" },
+                    { name: "Doença V", value: "", id: "V_disease", information: "V é uma doença viral" },
+                    { name: "Doença W", value: "", id: "W_disease", information: "W é uma doença viral" },
+                    { name: "Doença X", value: "", id: "X_disease", information: "X é uma doença viral" },
+                    { name: "Doença Y", value: "", id: "Y_disease", information: "Y é uma doença viral" },
+                    { name: "Doença Z", value: "", id: "Z_disease", information: "Z é uma doença viral" },
                 ];
+                break;
+            case 'X_disease':
+                options.diseases = [
+                    { name: "Doença X", value: "", id: "X_disease", information: "X é uma doença viral" }
+                ];
+                options['page'] = 'layouts/entitled';
+                options['title'] = options.diseases[0].name;
+                options.raw = options.diseases[0].information;
                 break;
             default:
                 options.page = current_page;
@@ -176,7 +194,7 @@ app.use('/:page/', (req, res, next) => {
 
 // error handling middleware
 app.use((err, req, res, next) => {
-    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
+    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [], raw: '' };
     options['page'] = 'layouts/entitled';
     options['title'] = 'Erro interno!';
     options.content = 'error';
@@ -188,7 +206,7 @@ app.use((err, req, res, next) => {
 
 // default route after everything fails
 app.use('/', (req, res) => {
-    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [] };
+    var options = { page: '', modal: '', title: '', page: '', 'next': '', footnote: '', content: '', percent: 0, diseases: [], raw: '' };
     options['page'] = 'layouts/entitled';
     options['title'] = 'Página não encontrada!';
     options.content = 'not_found';

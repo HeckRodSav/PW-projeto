@@ -82,7 +82,10 @@ DiseasesDAO.findById = (id, sendResult) => {
         if (err !== null) {
             console.log(err.stack);
             sendResult(null);
-        } else {
+        } else if (res === null) {
+            sendResult(null);
+        }
+        else {
             const disease = DiseasesDAO.toObj(res);
             disease.id = res.id;
             sendResult(disease);

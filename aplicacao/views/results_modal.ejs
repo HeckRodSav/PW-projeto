@@ -11,26 +11,26 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body text-box">
+				<div class="modal-body text-box" data-dismiss="modal" >
 					<span class="btn btn-hw-sm btn-block color-medium">
 						<%= diseases[i].name %>
 					</span>
 					<br>
 					<h5>
-						Principais sintomas:
-						</51>
-						<ul>
-							<li>Primeiro sintoma</li>
-							<li>Outro sintoma</li>
-						</ul>
-						<p>
-							X é uma doença bacteriana, etc.
-						</p>
-						<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi perferendis voluptatibus
-							dolorum ratione consequuntur excepturi, tenetur saepe minus deserunt velit!</p>
+					Principais sintomas:
+					</51>
+					<ul>
+						<li>Primeiro sintoma</li>
+						<li>Outro sintoma</li>
+					</ul>
+					<p>
+						<%- diseases[i].information %>
+					</p>
+					<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi perferendis voluptatibus
+						dolorum ratione consequuntur excepturi, tenetur saepe minus deserunt velit!</p>
 				</div>
 				<div class="modal-footer">
-					<a href="./disease_page.html" class=" nav-link btn btn-hw-sm btn-block color-medium" role="button">
+					<a href="/disease/<%= diseases[i].id %>" class=" nav-link btn btn-hw-sm btn-block color-medium" role="button">
 						Ir para página
 					</a>
 				</div>
