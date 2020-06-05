@@ -111,7 +111,7 @@ DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
     });
 };
 
-DiseasesDAO.relatedSymptoms  = (symptomId, sendResult) => {
+DiseasesDAO.relatedSymptoms = (symptomId, sendResult) => {
     colls.diseases.find({"symptoms": symptomId},{projection:{_id:0,symptoms:1}}).toArray((err,docs) => {
         var symptoms = [];
         if (err === null) {
@@ -126,6 +126,36 @@ DiseasesDAO.relatedSymptoms  = (symptomId, sendResult) => {
         sendResult(symptoms);
     });
 };
+
+DiseasesDAO.preliminaryResult = (symptomIds, sendResult) => {
+    var diseases = {};
+    // console.log(symptomIds);
+    colls.diseases.find({"symptoms": {$in:symptomIds}},{projection:{_id:0}}).toArray((err,docs) => {
+        if (err === null) {;
+            docs.forEach(doc => {
+                doc = DiseasesDAO.toObj(doc);
+                if(!(doc.id in diseases)){
+                    diseases[doc.id] = doc;
+                    diseases[doc.id].value = 0;
+                }
+            });
+            symptomIds.forEach(symptomId =>{
+                for(var i in diseases){
+                    if(diseases[i].symptoms.includes(symptomId)) diseases[i].value++;
+                }
+            });
+            for(var i in diseases){
+                diseases[i].value = diseases[i].value / diseases[i].symptoms.length * 100;
+            }
+        } else {
+            console.log(err.stack);
+        }
+        diseases = Object.values(diseases).sort((a,b)=>(a.value==b.value?a.name.toUpperCase()<a.name.toUpperCase():a.value - b.value)).reverse();
+        sendResult(diseases);
+    });
+};
+
+
 
 module.exports = {
     Disease: Disease,
