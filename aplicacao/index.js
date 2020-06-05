@@ -44,10 +44,11 @@ app.set('view engine', 'ejs');
 // set the default view lookup folder
 app.set('views', path.resolve(__dirname, 'views'));
 
-const port = 4519;
+const port = process.argv[2] || 4519;
 
 dbConnect.connect(() => {
     console.log('Database connected');
+    // console.log(process.env);
     app.listen(port, () => {
         console.log(`Servidor em execução port ${port}`);
     });
