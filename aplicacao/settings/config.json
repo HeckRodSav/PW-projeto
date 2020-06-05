@@ -1,7 +1,7 @@
 {
     "db": {
         "url": "mongodb://localhost:27017",
-        "db": "heathweb",
+        "db": "healthweb",
         "colls": {
             "diseases": "diseases",
             "symptoms": "symptoms"

@@ -2,10 +2,10 @@
  * Mongo shell script to create an empty profiles db
  */
 
-db = connect('127.0.0.1:27017/heathweb');
+db = connect('127.0.0.1:27017/healthweb');
 db.dropDatabase();
 
-db = connect('127.0.0.1:27017/heathweb');
+db = connect('127.0.0.1:27017/healthweb');
 
 db.createCollection('diseases');
 db.diseases.createIndex({'id': 1}, {unique: true});
@@ -21,43 +21,67 @@ db.symptoms.createIndex({'id': 1}, {unique: true});
 // });
 
 db.diseases.insertOne({
-    id: 1,
+    id: "D001",
     name: "gripe",
-    value: "",
     information: "Gripe é uma doença viral",
-    restriction: "Não existem retrições para a gripe"
+    restriction: "Não existem retrições para a gripe",
+    symptoms: ["S001","S002","S004","S005"]
 });
 
 db.diseases.insertOne({
-    id: 2,
+    id: "D002",
     name: "catapora",
-    value: "",
     information: "Catapora é uma doença viral",
-    restriction: "Não existem retrições para a catapora"
+    restriction: "Não existem retrições para a catapora",
+    symptoms: ["S003", "S006"]
 });
 
 db.diseases.insertOne({
-    id: 3,
-    name: "sars",
-    value: "",
-    information: "Sars é uma doença viral",
-    restriction: "Não existem retrições para a sars"
+    id: "D003",
+    name: "Pneumonia",
+    information: "Pneumonia é uma doença bacteriana",
+    restriction: "Não existem retrições para a pneumonia",
+    symptoms: ["S001","S002","S005"]
 });
-
-
 
 db.symptoms.insertOne({
-    id: 1,
+    id: "S001",
     name: "tosse",
-    value: "",
     information: "Quando se está tossindo muito",
     restriction: "Não existem retrições para tossis"
 });
 
 db.symptoms.insertOne({
-    id: 2,
+    id: "S002",
     name: "febre",
-    value: "",
+    information: "Temperatura acima de 37.6°",
+    restriction: "Não existem retrições para febres"
+});
+
+db.symptoms.insertOne({
+    id: "S003",
+    name: "coceira",
+    information: "Temperatura acima de 37.6°",
+    restriction: "Não existem retrições para febres"
+});
+
+db.symptoms.insertOne({
+    id: "S004",
+    name: "coriza",
+    information: "Temperatura acima de 37.6°",
+    restriction: "Não existem retrições para febres"
+});
+
+db.symptoms.insertOne({
+    id: "S005",
+    name: "dor no corpo",
+    information: "Temperatura acima de 37.6°",
+    restriction: "Não existem retrições para febres"
+});
+
+db.symptoms.insertOne({
+    id: "S006",
+    name: "manchas vermelhas no corpo",
     information: "Temperatura acima de 37.6°",
     restriction: "Não existem retrições para febres"
 });

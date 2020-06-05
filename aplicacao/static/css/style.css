@@ -200,3 +200,14 @@ ul {
 
 	padding: 25% 0;
 } */
+
+
+.radio label{
+	position: relative;
+}
+
+.radio label .v-center {
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+}

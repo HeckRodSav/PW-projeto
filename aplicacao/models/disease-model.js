@@ -6,10 +6,9 @@ const colls = require('../DAO/db-connect.js').colls;
  * Data object or transfer object
  *
  */
-function Disease(name, value, information, restriction) {
-    this.id = null;
+function Disease(id, name, information, restriction) {
+    this.id = id;
     this.name = name;
-    this.value = value;
     this.information = information;
     this.restriction = restriction;
 }
@@ -59,27 +58,6 @@ DiseasesDAO.toObj = function(doc) {
     return disease;
 }
 
-DiseasesDAO.insert = (Disease, sendStatus) => {
-    nextId((id) => {
-        if (id === null) {
-            console.log('Failed to generate a disease id');
-            sendStatus(false);
-        } else {
-            Disease.id = id;
-            colls.diseases.insertOne(DiseasesDAO.toDoc(Disease),
-                (err, res) => {
-                    if (err === null) {
-                        sendStatus(res.insertedCount > 0);
-                    } else {
-                        console.log(err.stack);
-                        sendStatus(false);
-                    }
-                }
-            );
-        }
-    });
-};
-
 DiseasesDAO.listAll = (sendResult) => {
     colls.diseases.find({}, {projection: {_id: 0}}).toArray((err, docs) => {
         if (err === null) {
@@ -110,21 +88,6 @@ DiseasesDAO.findById = (id, sendResult) => {
             sendResult(disease);
         }
     });
-};
-
-DiseasesDAO.update = (disease, sendStatus) => {
-    colls.diseases.replaceOne(
-        {id: disease.id},
-        DiseasesDAO.toDoc(disease),
-        (err, res) => {
-            if (err === null) {
-                sendStatus(res.matchedCount > 0);
-            } else {
-                console.log(err.stack);
-                sendStatus(false);
-            }
-        }
-    );
 };
 
 module.exports = {

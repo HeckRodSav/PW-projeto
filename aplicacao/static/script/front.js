@@ -29,4 +29,6 @@ $(document).ready(()=>{
 			$("#next-button").addClass("disabled").attr('aria-disabled','true');
 		}
 	});
+
+	$("#question-form").attr('action',`${location.origin}/questionnaire/answer`)
 });

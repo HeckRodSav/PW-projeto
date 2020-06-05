@@ -69,6 +69,7 @@ app.use('/terms/', homeController.termsPage);
 app.use('/about/', homeController.aboutPage);
 app.use('/disease/', diesaseController.diseaseList);
 
+
 app.use('/:page/', (req, res, next) => {
     const current_page = req.params.page;
     console.log(`\\${current_page}`);

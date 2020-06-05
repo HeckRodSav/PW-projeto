@@ -1,4 +1,4 @@
-				<div class="col-11 col-md-8">
+				<form class="col-11 col-md-8" id="question-form" action="" method="POST">
 					<div class="row v-divider"></div>
 					<div class="row">
 						<div class="col centering question">
@@ -10,7 +10,10 @@
 					<div class="row v-divider"></div>
 					<div class="row justify-content-between">
 						<div class="col-5 col-md-4 col-lg-3"><a href="javascript:history.back()" class="btn btn-hw-sm color-medium btn-block" role="button">Anterior</a></div>
-						<div class="col-5 col-md-4 col-lg-3"><a href="<%= next %>"  class="btn btn-hw-sm color-medium btn-block disabled" role="button" aria-disabled="true" id="next-button">Próximo</a></div>
+						<div class="col-5 col-md-4 col-lg-3">
+							<input type="submit" value="Próximo" class="btn btn-hw-sm color-medium btn-block disabled" role="button" aria-disabled="true" id="next-button">
+							<!-- <a href="<%= next %>"  class="btn btn-hw-sm color-medium btn-block disabled" role="button" aria-disabled="true" id="next-button">Próximo</a> -->
+						</div>
 					</div>
 					<div class="row v-divider"></div>
 					<div class="row">
@@ -23,4 +26,4 @@
 					<% if (footnote) { %>
 <%- include( `../${footnote}` ) %>
 					<% } %>
-				</div>
+				</form>
