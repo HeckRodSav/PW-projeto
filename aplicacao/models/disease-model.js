@@ -39,7 +39,8 @@ DiseasesDAO.toDoc = function (disease) {
         name: disease.name,
         value: disease.value,
         information: disease.information,
-        restriction: disease.restriction
+        restriction: disease.restriction,
+        symptoms: disease.symptoms
     }
 }
 
@@ -54,6 +55,7 @@ DiseasesDAO.toObj = function(doc) {
     disease.value = doc.value;
     disease.information = doc.information;
     disease.restriction = doc.restriction;
+    disease.symptoms = doc.symptoms;
 
     return disease;
 }
@@ -66,7 +68,7 @@ DiseasesDAO.listAll = (sendResult) => {
             docs.forEach(doc => {
                 const disease = DiseasesDAO.toObj(doc);
 
-                disease.id = doc.id;
+                // disease.id = doc.id;
                 diseases.push(disease);
             });
             sendResult(diseases);
@@ -90,6 +92,38 @@ DiseasesDAO.findById = (id, sendResult) => {
             disease.id = res.id;
             sendResult(disease);
         }
+    });
+};
+
+DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
+    colls.diseases.find({"symptoms": symptomId},{projection:{_id:0}}).toArray((err,docs) => {
+        var diseases = [];
+        if (err === null) {
+
+            docs.forEach(doc => {
+                const disease = DiseasesDAO.toObj(doc);
+                diseases.push(disease);
+            });
+        } else {
+            console.log(err.stack);
+        }
+        sendResult(diseases);
+    });
+};
+
+DiseasesDAO.relatedSymptoms  = (symptomId, sendResult) => {
+    colls.diseases.find({"symptoms": symptomId},{projection:{_id:0,symptoms:1}}).toArray((err,docs) => {
+        var symptoms = [];
+        if (err === null) {
+            docs.forEach(doc => {
+                symptoms = symptoms.concat(DiseasesDAO.toObj(doc).symptoms);
+            });
+            symptoms = Array.from(new Set(symptoms));
+        } else {
+            console.log(err.stack);
+            // sendResult([]);
+        }
+        sendResult(symptoms);
     });
 };
 
