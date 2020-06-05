@@ -69,6 +69,7 @@ app.get('/shouldnotwork', (req, res) => {
     throw Error('I just failed');
 });
 
+app.get('/', homeController.homePage);
 app.get('/home/', homeController.homePage);
 app.get('/meaning/', homeController.meaningPage);
 app.get('/terms/', homeController.termsPage);
