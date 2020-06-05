@@ -6,11 +6,10 @@ const colls = require('../DAO/db-connect.js').colls;
  * Data object or transfer object
  *
  */
-function Disease(name, value, information, restriction) {
+function Symptom(name, description, restriction) {
     this.id = null;
     this.name = name;
-    this.value = value;
-    this.information = information;
+    this.description = description;
     this.restriction = restriction;
 }
 
@@ -18,15 +17,15 @@ function Disease(name, value, information, restriction) {
  * Validate the object by checking if all static values
  * are defined, non-null and non-empty
  */
-Disease.prototype.isValid = function() {
+Symptom.prototype.isValid = function() {
     const reducer = (acc, cur) =>
         acc && cur !== undefined && cur !== null && cur.trim() != '';
 
-    return [this.name, this.information, this.restriction]
+    return [this.name, this.description, this.restriction]
         .reduce(reducer, true);
 };
 
-const DiseasesDAO = {};
+const SymptomsDAO = {};
 
 /**
  * Converts a disease object to an object literal
@@ -34,12 +33,12 @@ const DiseasesDAO = {};
  * in the evolution of the db, if we decide
  * to change names later (decoupling between the layers)
  */
-DiseasesDAO.toDoc = function (disease) {
+SymptomsDAO.toDoc = function (disease) {
     return {
         id: disease.id,
         name: disease.name,
         value: disease.value,
-        information: disease.information,
+        description: disease.description,
         restriction: disease.restriction
     }
 }
@@ -47,26 +46,26 @@ DiseasesDAO.toDoc = function (disease) {
 /**
  * Convert a doc to a transfer object
  */
-DiseasesDAO.toObj = function(doc) {
-    const disease = new Disease();
+SymptomsDAO.toObj = function(doc) {
+    const disease = new Symptom();
 
     disease.id = doc.id;
     disease.name = doc.name;
     disease.value = doc.value;
-    disease.information = doc.information;
+    disease.description = doc.description;
     disease.restriction = doc.restriction;
 
     return disease;
 }
 
-DiseasesDAO.insert = (Disease, sendStatus) => {
+SymptomsDAO.insert = (Symptom, sendStatus) => {
     nextId((id) => {
         if (id === null) {
             console.log('Failed to generate a disease id');
             sendStatus(false);
         } else {
-            Disease.id = id;
-            colls.diseases.insertOne(DiseasesDAO.toDoc(Disease),
+            Symptom.id = id;
+            colls.diseases.insertOne(SymptomsDAO.toDoc(Symptom),
                 (err, res) => {
                     if (err === null) {
                         sendStatus(res.insertedCount > 0);
@@ -80,13 +79,13 @@ DiseasesDAO.insert = (Disease, sendStatus) => {
     });
 };
 
-DiseasesDAO.listAll = (sendResult) => {
+SymptomsDAO.listAll = (sendResult) => {
     colls.diseases.find({}, {projection: {_id: 0}}).toArray((err, docs) => {
         if (err === null) {
             const diseases = [];
 
             docs.forEach(doc => {
-                const disease = DiseasesDAO.toObj(doc);
+                const disease = SymptomsDAO.toObj(doc);
 
                 disease.id = doc.id;
                 diseases.push(disease);
@@ -99,23 +98,23 @@ DiseasesDAO.listAll = (sendResult) => {
     });
 };
 
-DiseasesDAO.findById = (id, sendResult) => {
+SymptomsDAO.findById = (id, sendResult) => {
     colls.diseases.findOne({id: id}, (err, res) => {
         if (err !== null) {
             console.log(err.stack);
             sendResult(null);
         } else {
-            const disease = DiseasesDAO.toObj(res);
+            const disease = SymptomsDAO.toObj(res);
             disease.id = res.id;
             sendResult(disease);
         }
     });
 };
 
-DiseasesDAO.update = (disease, sendStatus) => {
+SymptomsDAO.update = (disease, sendStatus) => {
     colls.diseases.replaceOne(
         {id: disease.id},
-        DiseasesDAO.toDoc(disease),
+        SymptomsDAO.toDoc(disease),
         (err, res) => {
             if (err === null) {
                 sendStatus(res.matchedCount > 0);
@@ -128,6 +127,6 @@ DiseasesDAO.update = (disease, sendStatus) => {
 };
 
 module.exports = {
-    Disease: Disease,
-    DiseasesDAO: DiseasesDAO
+    Symptom: Symptom,
+    SymptomsDAO: SymptomsDAO
 }
