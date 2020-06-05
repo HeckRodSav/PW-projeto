@@ -9,6 +9,7 @@ const dbConnect = require('./DAO/db-connect');
 const Conf = require('./settings/config.json');
 
 const diesaseController = require('./controllers/disease-controller');
+const homeController = require('./controllers/home-controller');
 
 const livereload = (() => {
     var ret = null;
@@ -62,7 +63,11 @@ app.get('/shouldnotwork', (req,res)=>{
     throw Error('I just failed');
 });
 
-app.use('/disease/', diesaseController.diseaseList)
+app.use('/home/', homeController.homePage);
+app.use('/meaning/', homeController.meaningPage);
+app.use('/terms/', homeController.termsPage);
+app.use('/about/', homeController.aboutPage);
+app.use('/disease/', diesaseController.diseaseList);
 
 app.use('/:page/', (req, res, next) => {
     const current_page = req.params.page;
