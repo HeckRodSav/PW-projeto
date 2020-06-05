@@ -79,10 +79,12 @@ app.get('/about/', homeController.aboutPage);
 app.get('/disease', diseaseController.diseaseListPage);
 app.get('/disease/:code/', diseaseController.diseasePage);
 
-app.post('/questionnaire/answer', questionnaireController.Answer)
+app.get('/banana', questionnaireController.resultsPage);
+
+app.post('/questionnaire/answer', questionnaireController.Answer);
 
 
-app.get('/:page/', (req, res, next) => {
+app.get('/:page', (req, res, next) => {
     const current_page = req.params.page;
     console.log(`\\${current_page}`);
     const page_list = ['home', 'sex', 'age', 'height', 'weight', 'symptom', 'results', 'about', 'terms', 'diseases', 'meaning', 'X_disease'];

@@ -27,3 +27,20 @@ exports.Answer = (req, res) =>{
     exports.GetQuestion('', /*objeto encontrado na lógica*/);
     res.end();
 };
+
+exports.resultsPage = (req, res) => {
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
+    console.log("questionnaire-controller:\\results");
+    options['page'] = 'layouts/entitled';
+    options['title'] = 'Resultados';
+    options['content'] = 'results';
+    options.modal = 'results_modal';
+    options.diseases = [
+        { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral" },
+        { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral" },
+        { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral" },
+        { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral" }
+    ];
+    // options.diseases = LISTA DE DOENÇAS AQUI
+    res.render('./layouts/default', options);
+};
