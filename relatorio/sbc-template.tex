@@ -11,6 +11,10 @@
 \usepackage{tikz}
 
 \usepackage{hyperref}
+%\usepackage{multirow}
+%\usepackage{makecell}
+\usepackage{float}
+\usepackage{booktabs}
      
 \sloppy
 
@@ -24,6 +28,9 @@ Otavio Lourenço da Silva & 13201812292 & otavio.silva\inst{1}
 
 \address{\footnotesize\texttt{@aluno.ufabc.edu.br}}
 
+\newcommand{\x}{$\bullet$}
+\newcommand{\g}{$\circ$}
+
 \begin{document} 
 
 \maketitle
@@ -31,6 +38,10 @@ Otavio Lourenço da Silva & 13201812292 & otavio.silva\inst{1}
 \input{capitulos/resumo.tex}
 \input{capitulos/intro.tex}
 \input{capitulos/metodologia.tex}
+\input{capitulos/avaliacao.tex}
+\input{capitulos/discussao.tex}
+\input{capitulos/contribuicoes.tex}
+\input{capitulos/repositorio.tex}
 
 \bibliographystyle{template/sbc}
 \bibliography{sbc-template}

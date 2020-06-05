@@ -1,8 +1,7 @@
-\section{Metodologia}
+\section{Arquitetura do sistema}
 
-\subsection{Componentes}
+A arquitetura escolhida para a aplicação consiste num modelo \emph{Model View Controller} (MVC), figura \ref{fig:diagrama_bloco}, onde cada camada será responsável por uma função, sendo estas:
 
-A metodologia escolhida para a aplicação consiste num modelo \emph{Model View Controller} (MVC), onde cada camada será responsável por uma função, sendo estas:
 \begin{itemize}
     \item \emph{Views}: tudo que diz respeito a interação com usuário, ou o questionário de sintomas.
     \item \emph{Controllers}: serão responsáveis pela comunicação com os dados sobre doenças e pela aplicação de lógica sobre os sintomas apresentados pelo usuário, também como quem devolverá os possíveis passos para prevenção e tratamento para o diagnóstico, nunca deixando de reforçar a necessidade de buscar ajuda profissional.
@@ -11,44 +10,51 @@ A metodologia escolhida para a aplicação consiste num modelo \emph{Model View 
 
 Tais camadas sendo devidamente encapsulada e fazendo a comunicação com as outras de forma segura e sem interferir no contexto.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \input{images/diagrama_blocos}
     \caption{Diagrama de blocos do sistema.}
-    \label{fig:my_label}
+    \label{fig:diagrama_bloco}
 \end{figure}
 
-\subsubsection{Views}
+\subsection{Views}
 
 Também definido como \emph{front}, ou a interface vista pelo usuário. Será estruturada como um quiz, que apresentará questões booleanas, de verdadeiro ou falso, a respeito dos sintomas do paciente.
 As informações obtidas neste formulário serão enviadas para a camada \emph{Controllers}.
 
-\subsubsection{Controllers}
+As principais \emph{views} definidas pro sistema são:
+
+\begin{itemize}
+	\item \emph{defaul} é a base de HTML padrão para todas as páginas, contendo \emph{header} e \emph{footer} do arquivo de código, invocando as \emph{views} secundárias que contém os blocos associado;
+	\item \emph{entitled}, base para todas as páginas que contém bloco de título no topo, com conteúdo podendo variar entre um arquivo secundário ou um texto corrido do banco de dados;
+	\item \emph{question}, utilizada em todas as páginas de questionário sobre o usuário e seus sintomas, preparada para realizar a submissão a resposta para a \emph{controller} apropriada.
+\end{itemize}
+
+\subsection{Controllers}
 
 Aqui ocorre a interação do banco com as informações fornecidas pelo usuário, ou seja, questões simples sobre os sintomas registrados no banco serão enviadas para o \emph{front}, em seguida, a resposta voltará para a \emph{controller}.
 
 Baseado nisso, será realizado um mapeamento, excluindo doença que não incluem os sintomas indicados e incluindo as demais, até que o sistema aponte uma possível resposta, devolvendo para o usuário o diagnóstico, uma possível prevenção e alguma forma de tratamento.
 Sempre lembrando que a avaliação de qual diagnóstico adotar será baseada num índice de incidência que está em desenvolvimento e avaliação para melhor aproveitamento, citado na subseção \ref{ssec:models}.
 
-\subsubsection{Models}\label{ssec:models}
+O sistema conta com quatro \emph{controllers}:
+
+\begin{itemize}
+	\item \emph{home-controller}, responsável pela montagem da página inicial da aplicação, lidando também com as páginas secundárias, como ``termos de uso'' e ``sobre'';
+	\item \emph{question-controller}, responsável por organizar questões a respeito de sintomas, baseadas no que o usuário já respondeu, além de compilar os resultados na tela final;
+	\item \emph{disease-controller} lida com a \emph{model} associada à doenças, viabilizando pesquisas no banco, além de gerar a página com a lista de doenças cadastradas no sistema;
+	\item \emph{symptom-controller} lida com a \emph{model} associada aos sintomas, mantendo organizado o código de acesso às informações cadastradas no sistema.
+\end{itemize}
+
+\subsection{Models}\label{ssec:models}
 
 Consiste no banco de dados, relacionando doenças a seus sintomas e alguns possíveis tratamentos.
 Pretendemos definir um valor de probabilidade para esse relacionamento, para que tenha o papel de índice de tomada de decisão para a probabilidade do usuário apresentar a doença em questão baseado neste número.
 Ainda não temos plena certeza de como calcular este valor de incidência, porém algumas bibliografias apresentam dados relevantes\cite{AlbertEinstein, longo2011harrison}.
 
-\subsection{Opções similares}
+Existem duas \emph{models} no sistema:
 
-Temos como referência de aplicação o Guia de Doenças e Sintomas \cite{AlbertEinstein}, tanto como possível base de dados a ser compilados, quanto em como forma de levar o questionário ao usuário.
-
-Apresentando informações completas, é uma excelente ferramenta para sua proposta.
-Por outro lado, também ilustra o cenário que desejamos evitar, quando o usuário recebe uma lista assustadora de doenças relacionadas ao seus sintomas, tais como câncer ou insuficiência renal, quando estão ligadas ao caso por poucos sintomas.
-
-\subsection{Avaliação e conjunto de dados}
-
-Avaliação: A avaliação da aplicação seria feita de forma ideal recebendo respostas de um paciente e validando o diagnóstico com um médico capacitado. Embora seja possível mensurar a efetividade com casos de teste, se escolhem doenças e inserindo respostas relacionadas ao sintomas da mesma, não deixando de conferir casos excepsionais, ou  em outras palavras, casos em que o usuário possa estar com sintomas divergentes.
-Podem haver testes com usuários voluntários e até opiniões médicas.
-
-\subsection{Complementação}
-
-Respondendo aos questionamentos deixados pelo professor, não utilizaremos sistemas de análise de linguagem natural, já que a entrada do usuário será booleana, como sim ou não.
-Não encontramos nenhum módulo disponível para este sistema, mas com uma análise estatística é possível criar uma base com margem de acerto aceeitável.
+\begin{itemize}
+	\item \emph{disease-model}, capaz de lidar com o banco de dados de doenças, realizando buscas por tokens de identificação e sintomas;
+	\item \emph{symptom-model}, capaz de lidar com o banco de dados de sintomas, podendo listar sintomas por tokens;
+\end{itemize}
