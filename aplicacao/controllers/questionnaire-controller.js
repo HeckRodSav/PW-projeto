@@ -28,15 +28,14 @@ else res.redirect('/');
 
  if(userSymptom){
  if(res.body.answer=="s"){
-
+storageContent.symptomsList.push(userSymptom.id);
 }
-//     else{
-// //ver a lista de sintomas que estão como positivo na sessão e buscar doenças que ainda não foram perguntadas
 
-//     }
+//make the decision to continue asking or give a disease
+let parcialResult=diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
-exports.GetQuestion('', /*objeto encontrado na lógica*/);
-
+if(parcialResult[0].value>=80) res.redirect('/resultsPage');
+else 
  }
 
     res.end();
