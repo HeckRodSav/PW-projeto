@@ -31,11 +31,7 @@ exports.Answer = (req, res) => {
         let parcialResult = diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
         if (parcialResult[0].value >= 80) res.redirect('/resultsPage');
-<<<<<<< HEAD
-        else res.redired('/GetQuestion', {symptomId : diseaseModel.nextQuestion(res.flash.symptomsList)});
-=======
         else res.redirect('/GetQuestion', {symptomId : diseaseModel.nextQuestion(req.flash.symptomsList)});
->>>>>>> refs/remotes/origin/master
     }
 
     res.end();
