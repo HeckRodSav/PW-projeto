@@ -67,6 +67,14 @@ app.use(session({
     store: dbConnect.sessionStore
 }));
 
+// custom middlewares
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    res.locals.flash = req.session.flash;
+    delete req.session.flash;
+    next();
+});
+
 // 3rd-party middlwares
 app.use(bodyParser.urlencoded({ extended: true }));
 

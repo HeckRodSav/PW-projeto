@@ -17,7 +17,7 @@ function Disease(id, name, information, restriction) {
  * Validate the object by checking if all static values
  * are defined, non-null and non-empty
  */
-Disease.prototype.isValid = function() {
+Disease.prototype.isValid = function () {
     const reducer = (acc, cur) =>
         acc && cur !== undefined && cur !== null && cur.trim() != '';
 
@@ -47,7 +47,7 @@ DiseasesDAO.toDoc = function (disease) {
 /**
  * Convert a doc to a transfer object
  */
-DiseasesDAO.toObj = function(doc) {
+DiseasesDAO.toObj = function (doc) {
     const disease = new Disease();
 
     disease.id = doc.id;
@@ -61,7 +61,7 @@ DiseasesDAO.toObj = function(doc) {
 }
 
 DiseasesDAO.listAll = (sendResult) => {
-    colls.diseases.find({}, {projection: {_id: 0}}).toArray((err, docs) => {
+    colls.diseases.find({}, { projection: { _id: 0 } }).toArray((err, docs) => {
         if (err === null) {
             const diseases = [];
 
@@ -80,7 +80,7 @@ DiseasesDAO.listAll = (sendResult) => {
 };
 
 DiseasesDAO.findById = (id, sendResult) => {
-    colls.diseases.findOne({id: id}, (err, res) => {
+    colls.diseases.findOne({ id: id }, (err, res) => {
         if (err !== null) {
             console.log(err.stack);
             sendResult(null);
@@ -96,7 +96,7 @@ DiseasesDAO.findById = (id, sendResult) => {
 };
 
 DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
-    colls.diseases.find({"symptoms": symptomId},{projection:{_id:0}}).toArray((err,docs) => {
+    colls.diseases.find({ "symptoms": symptomId }, { projection: { _id: 0 } }).toArray((err, docs) => {
         var diseases = [];
         if (err === null) {
 
@@ -111,18 +111,18 @@ DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
     });
 };
 
-DiseasesDAO.nextQuestion(sessionSymptoms, nextSymptom) =>{
-let mostFilledDisease=preliminaryResult(this.sessionSymptoms)[0];
+DiseasesDAO.nextQuestion = (sessionSymptoms, sendResult) => {
+    let mostFilledDisease = DiseasesDAO.preliminaryResult(sessionSymptoms)[0];
 
-sessionSymptoms.forEach(ssymptom =>{
-if(mostFilledDisease.symptoms.indexOf(ssymptom)<0) sendResult(ssymptom);
-});
+    mostFilledDisease.symptoms.forEach(symptom => {
+        if (!sessionSymptoms.includes(symptom)) sendResult(symptom);
+    });
 
-sendResult(-1);
-}
+    sendResult(-1);
+};
 
 DiseasesDAO.relatedSymptoms = (symptomId, sendResult) => {
-    colls.diseases.find({"symptoms": symptomId},{projection:{_id:0,symptoms:1}}).toArray((err,docs) => {
+    colls.diseases.find({ "symptoms": symptomId }, { projection: { _id: 0, symptoms: 1 } }).toArray((err, docs) => {
         var symptoms = [];
         if (err === null) {
             docs.forEach(doc => {
@@ -140,27 +140,28 @@ DiseasesDAO.relatedSymptoms = (symptomId, sendResult) => {
 DiseasesDAO.preliminaryResult = (symptomIds, sendResult) => {
     var diseases = {};
     // console.log(symptomIds);
-    colls.diseases.find({"symptoms": {$in:symptomIds}},{projection:{_id:0}}).toArray((err,docs) => {
-        if (err === null) {;
+    colls.diseases.find({ "symptoms": { $in: symptomIds } }, { projection: { _id: 0 } }).toArray((err, docs) => {
+        if (err === null) {
+            ;
             docs.forEach(doc => {
                 doc = DiseasesDAO.toObj(doc);
-                if(!(doc.id in diseases)){
+                if (!(doc.id in diseases)) {
                     diseases[doc.id] = doc;
                     diseases[doc.id].value = 0;
                 }
             });
-            symptomIds.forEach(symptomId =>{
-                for(var i in diseases){
-                    if(diseases[i].symptoms.includes(symptomId)) diseases[i].value++;
+            symptomIds.forEach(symptomId => {
+                for (var i in diseases) {
+                    if (diseases[i].symptoms.includes(symptomId)) diseases[i].value++;
                 }
             });
-            for(var i in diseases){
+            for (var i in diseases) {
                 diseases[i].value = diseases[i].value / diseases[i].symptoms.length * 100;
             }
         } else {
             console.log(err.stack);
         }
-        diseases = Object.values(diseases).sort((a,b)=>(a.value==b.value?a.name.toUpperCase()<a.name.toUpperCase():a.value - b.value)).reverse();
+        diseases = Object.values(diseases).sort((a, b) => (a.value == b.value ? a.name.toUpperCase() < a.name.toUpperCase() : a.value - b.value)).reverse();
         sendResult(diseases);
     });
 };
