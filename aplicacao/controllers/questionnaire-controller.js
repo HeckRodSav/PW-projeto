@@ -1,6 +1,9 @@
 "use strict";
 
-const model = require('../models/symptom-model.js');
+const symptomModel = require('../models/symptom-model.js');
+const diseaseModel=require('../models/disease-model.js');
+const storageKey="userSession";
+
 
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
 
@@ -10,21 +13,32 @@ exports.GetQuestion = (req, res) => {
 };
 
 
-
 exports.Answer = (req, res) =>{
     console.log('body:',req.body);
-//tentar criar o m´metodo find by id e find by tag nas models
-// const userSymptom=model.findbyid(res.body.idSymptom);
 
-// if(res.body.Answer.val=="Sim"){
-// //fazer a lógica de buscar doenças com o mesmo sintoma no banco e montar uma lista
-// }
+    //primeiro, puxa o que tem guardado na localstorage
+    let storageContent=localStorage.getItem(storageKey);
+if(storageContent){
+storageContent=JSON.parse(storageContent);    
+}
+else res.redirect('/');
+
+//agora, a lógica que verifica a resposta e devolve uma nova pergunta
+    const userSymptom=symptomModel.findbyid(res.body.idSymptom);
+
+ if(userSymptom){
+ if(res.body.answer=="s"){
+
+}
 //     else{
 // //ver a lista de sintomas que estão como positivo na sessão e buscar doenças que ainda não foram perguntadas
 
 //     }
 
-    exports.GetQuestion('', /*objeto encontrado na lógica*/);
+exports.GetQuestion('', /*objeto encontrado na lógica*/);
+
+ }
+
     res.end();
 };
 
