@@ -7,7 +7,8 @@ const diseaseModel = require('../models/disease-model.js');
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
 
 exports.GetQuestion = (req, res) => {
-    //por favor, faça a renderização da página usando o res.body.symptomId
+//fazer a página de questão renderizar a questão com este objeto abaixo
+    const nextQuestionToPresent = diseaseModel.nextQuestion(req.flash.symptomsList);
 };
 
 
@@ -31,7 +32,7 @@ exports.Answer = (req, res) => {
         let parcialResult = diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
         if (parcialResult[0].value >= 80) res.redirect('/resultsPage');
-        else res.redirect('/GetQuestion', {symptomId : diseaseModel.nextQuestion(req.flash.symptomsList)});
+        else res.redirect('/GetQuestion');
     }
 
     res.end();
