@@ -2,14 +2,12 @@
 
 const symptomModel = require('../models/symptom-model.js');
 const diseaseModel=require('../models/disease-model.js');
-const storageKey="healthWebUserSession";
 
 
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
 
-exports.GetQuestion = (req, res) => {
-//retorna a view montando a questão com o objeto de sintoma que esse controler recebe no res
-
+exports.GetQuestion = (req, res) => { 
+    //por favor, faça a renderização da página usando o res.body.symptomId
 };
 
 
@@ -17,9 +15,9 @@ exports.Answer = (req, res) =>{
     console.log('body:',req.body);
 
     //primeiro, puxa o que tem guardado na localstorage
-    let storageContent=localStorage.getItem(storageKey);
-if(storageContent){
-storageContent=JSON.parse(storageContent);    
+    let storageContent=res.session.flash;
+
+    if(storageContent){
 }
 else res.redirect('/');
 
@@ -34,8 +32,8 @@ storageContent.symptomsList.push(userSymptom.id);
 //make the decision to continue asking or give a disease
 let parcialResult=diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
-if(parcialResult[0].value>=80) res.redirect('/resultsPage');
-else 
+if(parcialResult[0].value>=80) res.redirect('/resultsPage', );
+else res.redirect('/GetQuestion', symptomId :diseaseModel.nextQuestion(res.flash.symptomsList));
  }
 
     res.end();
