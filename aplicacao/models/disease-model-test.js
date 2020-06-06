@@ -27,10 +27,21 @@ function testPreliminaryResults() {
     });
 }
 
+function testFindById() {
+    const id = 'D001';
+
+    dbConnect.connect(() => {
+        console.log("testFindById:");
+        model.DiseasesDAO.findById(id, (result) => {
+            console.log('Result: ', result);
+            dbConnect.disconnect();
+        });
+    });
+}
 
 // testFindBySymptom();
 
-testPreliminaryResults();
+testFindById();
 
 // process.on('exit', (code) => {
 //     console.log(`\nServer exiting with code ${code}`);

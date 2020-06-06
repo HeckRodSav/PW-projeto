@@ -6,24 +6,12 @@ const colls = require('../DAO/db-connect.js').colls;
  * Data object or transfer object
  *
  */
-function Symptoms(name, information, restriction) {
-    this.id = null;
+function Symptoms(id, name, information, restriction) {
+    this.id = id;
     this.name = name;
     this.information = information;
     this.restriction = restriction;
 }
-
-/**
- * Validate the object by checking if all static values
- * are defined, non-null and non-empty
- */
-Symptoms.prototype.isValid = function() {
-    const reducer = (acc, cur) =>
-        acc && cur !== undefined && cur !== null && cur.trim() != '';
-
-    return [this.name, this.information, this.restriction]
-        .reduce(reducer, true);
-};
 
 const SymptomsDAO = {};
 
@@ -64,7 +52,7 @@ SymptomsDAO.listAll = (sendResult) => {
             docs.forEach(doc => {
                 const symptoms = SymptomsDAO.toObj(doc);
 
-                symptoms.id = doc.id;
+                // symptoms.id = doc.id;
                 symptoms.push(symptoms);
             });
             sendResult(symptoms);
@@ -77,16 +65,37 @@ SymptomsDAO.listAll = (sendResult) => {
 
 SymptomsDAO.findById = (id, sendResult) => {
     colls.symptoms.findOne({id: id}, (err, res) => {
+        console.log("id:",id);
         if (err !== null) {
             console.log(err.stack);
             sendResult(null);
         } else {
+            console.log("res:", res);
             const symptoms = SymptomsDAO.toObj(res);
-            symptoms.id = res.id;
+            // symptoms.id = res.id;
             sendResult(symptoms);
         }
     });
 };
+
+
+SymptomsDAO.listNames = (symptomIds, sendResult) => {
+    var symptomNames = [];
+    // console.log(symptomIds);
+    colls.symptoms.find({ "id": { $in: symptomIds } }, { projection: { _id: 0 } }).toArray((err, docs) => {
+        if (err === null) {
+            docs.forEach(doc => {
+                doc = SymptomsDAO.toObj(doc);
+                symptomNames.push(doc.name);
+            });
+        } else {
+            console.log(err.stack);
+        }
+        sendResult(symptomNames);
+    });
+};
+
+
 
 module.exports = {
     Symptoms: Symptoms,

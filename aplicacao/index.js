@@ -110,7 +110,7 @@ app.get('/:page', (req, res, next) => {
 
     if (!page_list.includes(current_page)) next();
     else {
-        var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
+        var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
         switch (current_page) {
             case 'sex':
                 options['page'] = 'layouts/question';

@@ -4,19 +4,21 @@ const symptomModel = require('../models/symptom-model.js');
 const diseaseModel = require('../models/disease-model.js');
 
 
-// var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
+// var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: '', symptomNames: '' };
 const first_symptoms = ["S127", "S208", "S122", "S124", "S073", "S088", "S308", "S291", "S016", "S286", "S155"];
 
 exports.Answer = (req, res) => {
-    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };;
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
     options['page'] = 'layouts/question';
 
     console.log('body:', req.body);
 
     //primeiro, puxa o que tem guardado na localstorage
-    let storageContent = req.session;
+    let storageContent = req.session.healthweb;
 
     console.log('storageContent:', storageContent);
+
+    let aux = true;
 
     if (!("sex" in storageContent) && !req.body.sex) {
         options['question'] = 'sex';
@@ -62,9 +64,9 @@ exports.Answer = (req, res) => {
                         if (parcialResult[0].value >= 80) res.redirec('/result'); //go to result page
 
                         //adiciona uma nova questão na lista a perguntar
-                        req.session.questionList.push(diseaseModel.nextQuestion(req.symptomsList, req.session.negativeSymptomsList));
+                        req.session.healthweb.questionList.push(diseaseModel.nextQuestion(req.symptomsList, req.session.healthweb.negativeSymptomsList));
 
-                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.questionList.shift());
+                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.healthweb.questionList.shift());
 
                         options['question'] = 'symptom';
                         options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
@@ -74,20 +76,25 @@ exports.Answer = (req, res) => {
 
                     }
                     else {
-                        req.session.questionList = first_symptoms;
-console.log('questionlist', req.session.questionList);
-console.log('first element', req.session.questionList.shift());
-console.log('the list without the element', req.session.questionList);
+                        aux = false;
+                        req.session.healthweb.questionList = first_symptoms;
+                        // console.log('questionlist', req.session.healthweb.questionList);
+                        let coisa = req.session.healthweb.questionList.shift()
+                        console.log('coisa:', coisa, typeof(coisa));
+                        // console.log('the list without the element', req.session.healthweb.questionList);
 
 
-                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.questionList.shift());
-console.log('nextquestion', nextQuestionToPresent);
+                        symptomModel.SymptomsDAO.findById(coisa, nextQuestionToPresent =>{
+                            console.log('nextquestion', nextQuestionToPresent);
 
-                        options['question'] = 'symptom';
-                        options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
-                        options.next = 'results';
-                        options.percent = 25;
-                        options.symptomId = nextQuestionToPresent.id;
+                            options['question'] = 'symptom';
+                            options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
+                            options.next = 'results';
+                            options.percent = 25;
+                            options.symptomId = nextQuestionToPresent.id;
+                            res.render('./layouts/default', options);
+                            res.end();
+                        });
 
 
                     } //add the first symptom to ask logic
@@ -96,20 +103,21 @@ console.log('nextquestion', nextQuestionToPresent);
             }
         }
     }
+    if(aux){
+        res.render('./layouts/default', options);
 
-    res.render('./layouts/default', options);
-
-    res.end();
+        res.end();
+    }
 };
 
 exports.resultsPage = (req, res) => {
-    let storageContent = req.session;
+    let storageContent = req.session.healthweb;
 
     if (!storageContent.symptomsList) res.redirec('/');
 
     let parcialResult = diseaseModel.preliminaryResult(storageContent.symptomsList).slice(0, 5); // take
 
-    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
     console.log("questionnaire-controller:\\results");
     options['page'] = 'layouts/entitled';
     options['title'] = 'Resultados';
