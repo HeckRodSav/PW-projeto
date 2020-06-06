@@ -15,17 +15,15 @@ exports.Answer = (req, res) => {
     console.log('body:', req.body);
 
     //primeiro, puxa o que tem guardado na localstorage
-    let storageContent = res.session.flash;
+    let storageContent = req.session.flash;
 
-    if (storageContent) {
-    }
-    else res.redirect('/');
+    if (!storageContent) res.redirect('/');
 
     //agora, a lógica que verifica a resposta e devolve uma nova pergunta
-    const userSymptom = symptomModel.findbyid(res.body.idSymptom);
+    const userSymptom = symptomModel.findbyid(req.body.idSymptom);
 
     if (userSymptom) {
-        if (res.body.answer == "s") {
+        if (req.body.answer == "s") {
             storageContent.symptomsList.push(userSymptom.id);
         }
 
@@ -33,7 +31,11 @@ exports.Answer = (req, res) => {
         let parcialResult = diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
         if (parcialResult[0].value >= 80) res.redirect('/resultsPage');
+<<<<<<< HEAD
         else res.redired('/GetQuestion', {symptomId : diseaseModel.nextQuestion(res.flash.symptomsList)});
+=======
+        else res.redirect('/GetQuestion', {symptomId : diseaseModel.nextQuestion(req.flash.symptomsList)});
+>>>>>>> refs/remotes/origin/master
     }
 
     res.end();
