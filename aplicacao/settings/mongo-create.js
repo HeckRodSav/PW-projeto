@@ -1991,7 +1991,7 @@ db.symptoms.insertOne({
 
 db.symptoms.insertOne({
     id:"S081",
-    name:"dispnéia",
+    name:"falta de ar",
     information:" ",
     restriction:" ",
 });
@@ -3510,7 +3510,7 @@ db.symptoms.insertOne({
 
 db.symptoms.insertOne({
     id:"S298",
-    name:"uma dor de cabeça",
+    name:"dor de cabeça",
     information:" ",
     restriction:" ",
 });

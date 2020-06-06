@@ -5,8 +5,7 @@ const diseaseModel = require('../models/disease-model.js');
 
 
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
-
-
+const first_symptoms = ["S127", "S208", "S122", "S124", "S073", "S088", "S308", "S291", "S016", "S286", "S155"];
 
 exports.Answer = (req, res) => {
     var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };;
