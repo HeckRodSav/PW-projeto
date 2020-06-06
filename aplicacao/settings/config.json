@@ -6,5 +6,6 @@
             "diseases": "diseases",
             "symptoms": "symptoms"
         }
-    }
+    },
+    "secret": "ff743fb0dc08ee859d8a854157e6c54c"
 }

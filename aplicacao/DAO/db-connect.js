@@ -2,18 +2,18 @@
 
 const dbConf = require('../settings/config.json').db;
 const MongoClient = require('mongodb').MongoClient;
-// const session = require('express-session');
-// const MongoDBStore = require('connect-mongodb-session')(session);
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const client = new MongoClient(dbConf.url, {useUnifiedTopology: true});
 
-// exports.sessionStore = new MongoDBStore({
-//     uri: dbConf.url,
-//     databaseName: dbConf.db,
-//     collection: dbConf.colls.sessions
-// });
+exports.sessionStore = new MongoDBStore({
+    uri: dbConf.url,
+    databaseName: dbConf.db,
+    collection: dbConf.colls.sessions
+});
 
-// exports.sessionStore.on('error', err => console.log(err));
+exports.sessionStore.on('error', err => console.log(err));
 
 exports.colls = {};
 

@@ -4,9 +4,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const process = require('process');
+const session = require('express-session');
 
 const dbConnect = require('./DAO/db-connect');
-const Conf = require('./settings/config.json');
+const config = require('./settings/config.json');
 
 const diseaseController = require('./controllers/disease-controller');
 // const symptomsController = require('./controllers/symptoms-controller');
@@ -58,6 +59,13 @@ if (connectLivereload !== null) {
     app.use(connectLivereload());
 }
 
+// configure the session middlware
+app.use(session({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: false,
+    store: dbConnect.sessionStore
+}));
 
 // 3rd-party middlwares
 app.use(bodyParser.urlencoded({ extended: true }));
