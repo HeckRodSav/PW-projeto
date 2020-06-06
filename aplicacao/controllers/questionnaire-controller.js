@@ -19,7 +19,7 @@ exports.Answer = (req, res) =>{
     //primeiro, puxa o que tem guardado na localstorage
     let storageContent=localStorage.getItem(storageKey);
 if(storageContent){
-storageContent=JSON.parse(storageContent);    
+storageContent=JSON.parse(storageContent);
 }
 else res.redirect('/');
 
@@ -35,7 +35,7 @@ storageContent.symptomsList.push(userSymptom.id);
 let parcialResult=diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
 if(parcialResult[0].value>=80) res.redirect('/resultsPage');
-else 
+else
  }
 
     res.end();

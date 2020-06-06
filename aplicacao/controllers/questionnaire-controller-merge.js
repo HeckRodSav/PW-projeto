@@ -12,57 +12,76 @@ exports.GetQuestion = (req, res) => {
 
 };
 
+const options_void = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '_' };
+let storageContent = {}
 
 exports.Answer = (req, res) => {
-    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };;
+    options['page'] = 'layouts/question';
 
     console.log('body:', req.body);
+    console.log('storageContent:', storageContent);
 
-    //primeiro, puxa o que tem guardado na localstorage
-    let storageContent = localStorage.getItem(storageKey);
-    if (storageContent) {
-        storageContent = JSON.parse(storageContent);
-        if(!("sex" in storageContent)){
-            if( Object.keys(storageContent).length > 0)
-            {
-                localStorage.removeItem(storageKey);
-                res.redirect('/');
-            }
-            else
-            {
-                options['page'] = 'layouts/question';
-                options['question'] = 'sex';
-                options['title'] = 'Sexo biológico*.';
-                options['footnote'] = 'sex_footnote';
-                options.next = 'age';
-                options.percent = 5;
-                res.render('./layouts/default', options);
+
+    if (!("sex" in storageContent) && !req.body.sex) {
+        options['question'] = 'sex';
+        options['title'] = 'Sexo biológico*.';
+        options['footnote'] = 'sex_footnote';
+        options.next = 'age';
+        options.percent = 5;
+    } else {
+        if (req.body.sex) storageContent.sex = req.body.sex;
+        if (!("age" in storageContent) && !req.body.age) {
+            options['question'] = 'age';
+            options['title'] = 'Sua idade em anos.';
+            options.next = 'height';
+            options.percent = 10;
+        } else {
+            if (req.body.age) storageContent.age = req.body.age;
+        }
+        if (!("height" in storageContent) && !req.body.height) {
+            options['question'] = 'height';
+            options['title'] = 'Sua altura em m.';
+            options.next = 'weight';
+            options.percent = 15;
+        } else {
+            if (req.body.height) storageContent.height = req.body.height;
+            if (!("weight" in storageContent) && !req.body.weight) {
+                options['question'] = 'weight';
+                options['title'] = 'Seu peso em kg.';
+                options.next = 'symptom';
+                options.percent = 20;
+            } else {
+                if (req.body.weight) storageContent.weight = req.body.weight;
+                options['question'] = 'symptom';
+                options['title'] = 'Você apresentou sintôma X?';
+                options.next = 'results';
+                options.percent = 25;
+                options.symptomId = 'test';
             }
         }
-        if(!("weight" in storageContent)){
-            if(!("height" in storageContent)){
-                if(!("age" in storageContent)){
-                }
-            }
-        }
+
     }
-    else
 
+
+    // }
+
+    res.render('./layouts/default', options);
     //agora, a lógica que verifica a resposta e devolve uma nova pergunta
-    const userSymptom = symptomModel.findbyid(res.body.idSymptom);
+    // const userSymptom = symptomModel.findbyid(res.body.idSymptom);
 
-    if (userSymptom) {
-        if (res.body.answer == "s") {
+    // if (userSymptom) {
+    //     if (res.body.answer == "s") {
 
-        }
-        //     else{
-        // //ver a lista de sintomas que estão como positivo na sessão e buscar doenças que ainda não foram perguntadas
+    //     }
+    //     //     else{
+    //     // //ver a lista de sintomas que estão como positivo na sessão e buscar doenças que ainda não foram perguntadas
 
-        //     }
+    //     //     }
 
-        exports.GetQuestion('');
+    //     exports.GetQuestion('');
 
-    }
+    // }
 
     res.end();
 };
