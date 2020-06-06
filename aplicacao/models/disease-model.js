@@ -111,6 +111,16 @@ DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
     });
 };
 
+DiseasesDAO.nextQuestion(sessionSymptoms, nextSymptom) =>{
+let mostFilledDisease=preliminaryResult(this.sessionSymptoms)[0];
+
+sessionSymptoms.forEach(ssymptom =>{
+if(mostFilledDisease.symptoms.indexOf(ssymptom)<0) sendResult(ssymptom);
+});
+
+sendResult(-1);
+}
+
 DiseasesDAO.relatedSymptoms = (symptomId, sendResult) => {
     colls.diseases.find({"symptoms": symptomId},{projection:{_id:0,symptoms:1}}).toArray((err,docs) => {
         var symptoms = [];
