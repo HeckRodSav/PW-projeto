@@ -61,7 +61,10 @@ exports.Answer = (req, res) => {
 
                         if (parcialResult[0].value >= 80) res.redirec('/result'); //go to result page
 
-                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(diseaseModel.nextQuestion(req.flash.symptomsList, req.session.flash.negativeSymptomsList));
+                        //adiciona uma nova questão na lista a perguntar
+                        req.session.flash.questionList.push(diseaseModel.nextQuestion(req.flash.symptomsList, req.session.flash.negativeSymptomsList));
+
+                        let nextQuestionToPresent =symptomModel.SymptomsDAO.findById(req.session.flash.questionList.shift());
 
                         options['question'] = 'symptom';
                         options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
@@ -70,7 +73,19 @@ exports.Answer = (req, res) => {
                         options.symptomId = nextQuestionToPresent.id;
 
                     }
-                    else { ; } //add the first somptom to ask logic
+                    else { 
+req.session.flash.questionList=first_symptoms;
+
+let nextQuestionToPresent =symptomModel.SymptomsDAO.findById(req.session.flash.questionList.shift());
+
+options['question'] = 'symptom';
+options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
+options.next = 'results';
+options.percent = 25;
+options.symptomId = nextQuestionToPresent.id;
+
+
+                     } //add the first symptom to ask logic
 
                 }
             }
