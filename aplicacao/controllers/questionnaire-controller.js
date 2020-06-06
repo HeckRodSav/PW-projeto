@@ -21,7 +21,7 @@ exports.Answer = (req, res) => {
     if (!storageContent) res.redirect('/');
 
     //agora, a lógica que verifica a resposta e devolve uma nova pergunta
-    const userSymptom = symptomModel.findbyid(req.body.idSymptom);
+    const userSymptom = symptomModel.SymptomsDAO.findById(req.body.idSymptom);
 
     if (userSymptom) {
         if (req.body.answer == "s") {
