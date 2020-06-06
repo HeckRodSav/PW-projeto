@@ -12,7 +12,7 @@ const config = require('./settings/config.json');
 const diseaseController = require('./controllers/disease-controller');
 // const symptomsController = require('./controllers/symptoms-controller');
 const homeController = require('./controllers/home-controller');
-const questionnaireController = require('./controllers/questionnaire-controller');
+const questionnaireController = require('./controllers/questionnaire-controller-merge');
 
 const livereload = (() => {
     var ret = null;

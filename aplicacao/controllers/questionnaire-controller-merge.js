@@ -38,29 +38,28 @@ exports.Answer = (req, res) => {
             options.percent = 10;
         } else {
             if (req.body.age) storageContent.age = req.body.age;
-        }
-        if (!("height" in storageContent) && !req.body.height) {
-            options['question'] = 'height';
-            options['title'] = 'Sua altura em m.';
-            options.next = 'weight';
-            options.percent = 15;
-        } else {
-            if (req.body.height) storageContent.height = req.body.height;
-            if (!("weight" in storageContent) && !req.body.weight) {
-                options['question'] = 'weight';
-                options['title'] = 'Seu peso em kg.';
-                options.next = 'symptom';
-                options.percent = 20;
+            if (!("height" in storageContent) && !req.body.height) {
+                options['question'] = 'height';
+                options['title'] = 'Sua altura em m.';
+                options.next = 'weight';
+                options.percent = 15;
             } else {
-                if (req.body.weight) storageContent.weight = req.body.weight;
-                options['question'] = 'symptom';
-                options['title'] = 'Você apresentou sintôma X?';
-                options.next = 'results';
-                options.percent = 25;
-                options.symptomId = 'test';
+                if (req.body.height) storageContent.height = req.body.height;
+                if (!("weight" in storageContent) && !req.body.weight) {
+                    options['question'] = 'weight';
+                    options['title'] = 'Seu peso em kg.';
+                    options.next = 'symptom';
+                    options.percent = 20;
+                } else {
+                    if (req.body.weight) storageContent.weight = req.body.weight;
+                    options['question'] = 'symptom';
+                    options['title'] = 'Você apresentou sintôma X?';
+                    options.next = 'results';
+                    options.percent = 25;
+                    options.symptomId = 'test';
+                }
             }
         }
-
     }
 
 
