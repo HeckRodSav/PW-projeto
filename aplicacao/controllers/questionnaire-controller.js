@@ -75,8 +75,13 @@ exports.Answer = (req, res) => {
                     }
                     else {
                         req.session.questionList = first_symptoms;
+console.log('questionlist', req.session.questionList);
+console.log('first element', req.session.questionList.shift());
+console.log('the list without the element', req.session.questionList);
+
 
                         let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.questionList.shift());
+console.log('nextquestion', nextQuestionToPresent);
 
                         options['question'] = 'symptom';
                         options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
