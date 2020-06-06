@@ -14,7 +14,7 @@ exports.Answer = (req, res) => {
     console.log('body:', req.body);
 
     //primeiro, puxa o que tem guardado na localstorage
-    let storageContent = req.session.flash;
+    let storageContent = req.session;
 
     console.log('storageContent:', storageContent);
 
@@ -47,8 +47,8 @@ exports.Answer = (req, res) => {
                     options.percent = 20;
                 } else {
                     if (req.body.weight) storageContent.weight = req.body.weight;
-                    if(!storageContent.symptomsList) storageContent.symptomsList = []
-                    if(!storageContent.negativeSymptomsList) storageContent.negativeSymptomsList = []
+                    if (!storageContent.symptomsList) storageContent.symptomsList = []
+                    if (!storageContent.negativeSymptomsList) storageContent.negativeSymptomsList = []
                     //agora, a lógica que verifica a resposta e devolve uma nova pergunta
                     const userSymptom = symptomModel.SymptomsDAO.findById(req.body.idSymptom);
 
@@ -62,9 +62,9 @@ exports.Answer = (req, res) => {
                         if (parcialResult[0].value >= 80) res.redirec('/result'); //go to result page
 
                         //adiciona uma nova questão na lista a perguntar
-                        req.session.flash.questionList.push(diseaseModel.nextQuestion(req.flash.symptomsList, req.session.flash.negativeSymptomsList));
+                        req.session.questionList.push(diseaseModel.nextQuestion(req.symptomsList, req.session.negativeSymptomsList));
 
-                        let nextQuestionToPresent =symptomModel.SymptomsDAO.findById(req.session.flash.questionList.shift());
+                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.questionList.shift());
 
                         options['question'] = 'symptom';
                         options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
@@ -73,19 +73,19 @@ exports.Answer = (req, res) => {
                         options.symptomId = nextQuestionToPresent.id;
 
                     }
-                    else { 
-req.session.flash.questionList=first_symptoms;
+                    else {
+                        req.session.questionList = first_symptoms;
 
-let nextQuestionToPresent =symptomModel.SymptomsDAO.findById(req.session.flash.questionList.shift());
+                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.questionList.shift());
 
-options['question'] = 'symptom';
-options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
-options.next = 'results';
-options.percent = 25;
-options.symptomId = nextQuestionToPresent.id;
+                        options['question'] = 'symptom';
+                        options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
+                        options.next = 'results';
+                        options.percent = 25;
+                        options.symptomId = nextQuestionToPresent.id;
 
 
-                     } //add the first symptom to ask logic
+                    } //add the first symptom to ask logic
 
                 }
             }
@@ -98,11 +98,11 @@ options.symptomId = nextQuestionToPresent.id;
 };
 
 exports.resultsPage = (req, res) => {
-    let storageContent = req.session.flash;
+    let storageContent = req.session;
 
     if (!storageContent.symptomsList) res.redirec('/');
 
-    let parcialResult = diseaseModel.preliminaryResult(storageContent.symptomsList).slice(0,5); // take
+    let parcialResult = diseaseModel.preliminaryResult(storageContent.symptomsList).slice(0, 5); // take
 
     var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
     console.log("questionnaire-controller:\\results");

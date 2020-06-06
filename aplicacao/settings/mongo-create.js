@@ -118,7 +118,7 @@ db.diseases.insertOne({
 
 db.diseases.insertOne({
     id:"D002",
-    name:"aguda e sarcoidose crônica",
+    name:"sarcoidose aguda e crônica",
     information:" ",
     restriction:" ",
     symptoms:["S126", "S122", "S021", "S232", "S081", "S290", "S241", "S286", "S120", "S181", "S109", "S187", "S307", "S225", "S176", "S070", "S130"]
