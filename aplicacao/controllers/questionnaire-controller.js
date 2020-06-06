@@ -48,57 +48,61 @@ exports.Answer = (req, res) => {
                     options.percent = 20;
                 } else {
                     if (req.body.weight) storageContent.weight = req.body.weight;
+                    if(!storageContent.symptomsList) storageContent.symptomsList = []
+                    if(!storageContent.negativeSymptomsList) storageContent.negativeSymptomsList = []
+                    //agora, a lógica que verifica a resposta e devolve uma nova pergunta
+                    const userSymptom = symptomModel.SymptomsDAO.findById(req.body.idSymptom);
 
-    //agora, a lógica que verifica a resposta e devolve uma nova pergunta
-    const userSymptom = symptomModel.SymptomsDAO.findById(req.body.idSymptom);
+                    if (userSymptom) {
+                        if (req.body.answer == "s") storageContent.symptomsList.push(userSymptom.id);
+                        else storageContent.negativeSymptomsList.push(userSymptom.id);
 
-    if (userSymptom) {
-        if (req.body.answer == "s") {
-            storageContent.symptomsList.push(userSymptom.id);
-        }
-else             storageContent.negativeSymptomsList.push(userSymptom.id);
+                        //make the decision to continue asking or give a disease
+                        let parcialResult = diseaseModel.preliminaryResult(storageContent.symptomsList);
 
-        //make the decision to continue asking or give a disease
-        let parcialResult = diseaseModel.preliminaryREsult(storageContent.symptomsList);
+                        if (parcialResult[0].value >= 80) res.redirec('/result'); //go to result page
 
-        if (parcialResult[0].value >= 80) //go to result page
+                        let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(diseaseModel.nextQuestion(req.flash.symptomsList, req.session.flash.negativeSymptomsList));
 
-        let nextQuestionToPresent =symptomModel.SymptomsDAO.findById( diseaseModel.nextQuestion(req.flash.symptomsList, req.session.flash.negativeSymptomsList));
+                        options['question'] = 'symptom';
+                        options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
+                        options.next = 'results';
+                        options.percent = 25;
+                        options.symptomId = nextQuestionToPresent.id;
 
-        options['question'] = 'symptom';
-        options['title'] = 'Você apresentou '+nextQuestionToPresent.name+'?';
-        options.next = 'results';
-        options.percent = 25;
-        options.symptomId = nextQuestionToPresent.id;
-
-    }
-else //add the first somptom to ask logic
+                    }
+                    else { ; } //add the first somptom to ask logic
 
                 }
             }
         }
     }
 
-
-
-
+    res.render('./layouts/default', options);
 
     res.end();
 };
 
 exports.resultsPage = (req, res) => {
+    let storageContent = req.session.flash;
+
+    if (!storageContent.symptomsList) res.redirec('/');
+
+    let parcialResult = diseaseModel.preliminaryResult(storageContent.symptomsList).slice(0,5); // take
+
     var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };
     console.log("questionnaire-controller:\\results");
     options['page'] = 'layouts/entitled';
     options['title'] = 'Resultados';
     options['content'] = 'results';
     options.modal = 'results_modal';
-    options.diseases = [
-        { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral" },
-        { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral" },
-        { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral" },
-        { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral" }
-    ];
+    options.diseases = parcialResult;
+    // options.diseases = [
+    //     { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral" },
+    //     { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral" },
+    //     { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral" },
+    //     { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral" }
+    // ];
     // options.diseases = LISTA DE DOENÇAS AQUI
     res.render('./layouts/default', options);
 };
