@@ -2,7 +2,7 @@
 
 const symptomModel = require('../models/symptom-model.js');
 const diseaseModel=require('../models/disease-model.js');
-const storageKey="userSession";
+const storageKey="healthWebUserSession";
 
 
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
