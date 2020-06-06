@@ -30,5 +30,12 @@ $(document).ready(()=>{
 		}
 	});
 
+    $("#menu-toggle").click(function(e) {
+		e.preventDefault();
+		console.log("click");
+		$("#wrapper").toggleClass("toggled");
+	  });
+
+
 	$("#question-form").attr('action',`${location.origin}/questionnaire/answer`)
 });

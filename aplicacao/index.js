@@ -79,7 +79,7 @@ app.get('/about/', homeController.aboutPage);
 app.get('/disease', diseaseController.diseaseListPage);
 app.get('/disease/:code/', diseaseController.diseasePage);
 
-app.get('/banana', questionnaireController.resultsPage);
+app.get('/result', questionnaireController.resultsPage);
 
 app.post('/questionnaire/answer', questionnaireController.Answer);
 
