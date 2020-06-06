@@ -69,11 +69,13 @@ SymptomsDAO.findById = (id, sendResult) => {
         if (err !== null) {
             console.log(err.stack);
             sendResult(null);
-        } else {
+        } else if (res == null) {
+            sendResult(null);
+        }else{
             console.log("res:", res);
-            const symptoms = SymptomsDAO.toObj(res);
+            const symptom = SymptomsDAO.toObj(res);
             // symptoms.id = res.id;
-            sendResult(symptoms);
+            sendResult(symptom);
         }
     });
 };
