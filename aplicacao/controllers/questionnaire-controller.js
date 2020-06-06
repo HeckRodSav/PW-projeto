@@ -6,19 +6,48 @@ const diseaseModel = require('../models/disease-model.js');
 
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: ''};
 
-exports.GetQuestion = (req, res) => {
-//fazer a página de questão renderizar a questão com este objeto abaixo
-    const nextQuestionToPresent = diseaseModel.nextQuestion(req.flash.symptomsList);
-};
 
 
 exports.Answer = (req, res) => {
+    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '' };;
+    options['page'] = 'layouts/question';
+
     console.log('body:', req.body);
 
     //primeiro, puxa o que tem guardado na localstorage
     let storageContent = req.session.flash;
 
-    if (!storageContent) res.redirect('/');
+    console.log('storageContent:', storageContent);
+
+    if (!("sex" in storageContent) && !req.body.sex) {
+        options['question'] = 'sex';
+        options['title'] = 'Sexo biológico*.';
+        options['footnote'] = 'sex_footnote';
+        options.next = 'age';
+        options.percent = 5;
+    } else {
+        if (req.body.sex) storageContent.sex = req.body.sex;
+        if (!("age" in storageContent) && !req.body.age) {
+            options['question'] = 'age';
+            options['title'] = 'Sua idade em anos.';
+            options.next = 'height';
+            options.percent = 10;
+        } else {
+            if (req.body.age) storageContent.age = req.body.age;
+            if (!("height" in storageContent) && !req.body.height) {
+                options['question'] = 'height';
+                options['title'] = 'Sua altura em m.';
+                options.next = 'weight';
+                options.percent = 15;
+            } else {
+                if (req.body.height) storageContent.height = req.body.height;
+                if (!("weight" in storageContent) && !req.body.weight) {
+                    options['question'] = 'weight';
+                    options['title'] = 'Seu peso em kg.';
+                    options.next = 'symptom';
+                    options.percent = 20;
+                } else {
+                    if (req.body.weight) storageContent.weight = req.body.weight;
 
     //agora, a lógica que verifica a resposta e devolve uma nova pergunta
     const userSymptom = symptomModel.SymptomsDAO.findById(req.body.idSymptom);
@@ -27,13 +56,32 @@ exports.Answer = (req, res) => {
         if (req.body.answer == "s") {
             storageContent.symptomsList.push(userSymptom.id);
         }
+else             storageContent.negativeSymptomsList.push(userSymptom.id);
 
         //make the decision to continue asking or give a disease
         let parcialResult = diseaseModel.preliminaryREsult(storageContent.symptomsList);
 
-        if (parcialResult[0].value >= 80) res.redirect('/resultsPage');
-        else res.redirect('/GetQuestion');
+        if (parcialResult[0].value >= 80) //go to result page
+
+        let nextQuestionToPresent =symptomModel.SymptomsDAO.findById( diseaseModel.nextQuestion(req.flash.symptomsList, req.session.flash.negativeSymptomsList));
+
+        options['question'] = 'symptom';
+        options['title'] = 'Você apresentou '+nextQuestionToPresent.name+'?';
+        options.next = 'results';
+        options.percent = 25;
+        options.symptomId = nextQuestionToPresent.id;
+
     }
+else //add the first somptom to ask logic
+
+                }
+            }
+        }
+    }
+
+
+
+
 
     res.end();
 };

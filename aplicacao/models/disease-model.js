@@ -111,11 +111,11 @@ DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
     });
 };
 
-DiseasesDAO.nextQuestion = (sessionSymptoms, sendResult) => {
+DiseasesDAO.nextQuestion = (sessionSymptoms, deniedSymptoms, sendResult) => {
     let mostFilledDisease = DiseasesDAO.preliminaryResult(sessionSymptoms)[0];
 
     mostFilledDisease.symptoms.forEach(symptom => {
-        if (!sessionSymptoms.includes(symptom)) sendResult(symptom);
+        if (!sessionSymptoms.includes(symptom) && !deniedSymptoms.includes(symptom)) sendResult(symptom);
     });
 
     sendResult(-1);
