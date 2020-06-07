@@ -7,8 +7,8 @@ const diseaseModel = require('../models/disease-model.js');
 const first_symptoms = ["S127", "S208", "S122", "S124", "S073", "S088", "S308", "S291", "S286", "S154"];
 
 exports.nextQuestion = (sessionSymptoms, deniedSymptoms, queueSymptoms, sendResult) => {
-    console.log("sessionSymptoms:", sessionSymptoms);
-    console.log("deniedSymptoms:", deniedSymptoms);
+    // console.log("sessionSymptoms:", sessionSymptoms);
+    // console.log("deniedSymptoms:", deniedSymptoms);
     diseaseModel.DiseasesDAO.preliminaryResult(sessionSymptoms, ret => {
         var choosen = null;
         for (var i in ret) {
@@ -36,6 +36,8 @@ exports.Answer = (req, res) => {
     var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
     options['page'] = 'layouts/question';
     options['question'] = 'symptom';
+
+    if (!req.session.healthweb) req.session.healthweb = {};
 
     // console.log('body:', req.body);
 
