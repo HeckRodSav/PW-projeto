@@ -61,21 +61,18 @@ DiseasesDAO.toObj = function (doc) {
 }
 
 DiseasesDAO.listAll = (sendResult) => {
-    colls.diseases.find({}, { projection: { _id: 0 } }).toArray((err, docs) => {
+    colls.diseases.find({},{projection: { _id: 0 } }).toArray((err, docs) => {
+        // console.log("docs:",docs);
+        var diseases = [];
         if (err === null) {
-            const diseases = [];
-
             docs.forEach(doc => {
                 const disease = DiseasesDAO.toObj(doc);
-
-                // disease.id = doc.id;
                 diseases.push(disease);
             });
-            sendResult(diseases);
         } else {
             console.log(err.stack);
-            sendResult([]);
         }
+        sendResult(diseases);
     });
 };
 
@@ -109,16 +106,6 @@ DiseasesDAO.findBySymptom = (symptomId, sendResult) => {
         }
         sendResult(diseases);
     });
-};
-
-DiseasesDAO.nextQuestion = (sessionSymptoms, deniedSymptoms, sendResult) => {
-    let mostFilledDisease = DiseasesDAO.preliminaryResult(sessionSymptoms)[0];
-
-    mostFilledDisease.symptoms.forEach(symptom => {
-        if (!sessionSymptoms.includes(symptom) && !deniedSymptoms.includes(symptom)) sendResult(symptom);
-    });
-
-    sendResult(-1);
 };
 
 DiseasesDAO.relatedSymptoms = (symptomId, sendResult) => {
@@ -156,7 +143,7 @@ DiseasesDAO.preliminaryResult = (symptomIds, sendResult) => {
                 }
             });
             for (var i in diseases) {
-                diseases[i].value = diseases[i].value / diseases[i].symptoms.length * 100;
+                diseases[i].value = Math.round(diseases[i].value / diseases[i].symptoms.length * 100);
             }
         } else {
             console.log(err.stack);

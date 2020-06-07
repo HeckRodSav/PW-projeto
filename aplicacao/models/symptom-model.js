@@ -50,10 +50,10 @@ SymptomsDAO.listAll = (sendResult) => {
             const symptoms = [];
 
             docs.forEach(doc => {
-                const symptoms = SymptomsDAO.toObj(doc);
+                const symptom = SymptomsDAO.toObj(doc);
 
                 // symptoms.id = doc.id;
-                symptoms.push(symptoms);
+                symptoms.push(symptom);
             });
             sendResult(symptoms);
         } else {
@@ -65,14 +65,14 @@ SymptomsDAO.listAll = (sendResult) => {
 
 SymptomsDAO.findById = (id, sendResult) => {
     colls.symptoms.findOne({id: id}, (err, res) => {
-        console.log("id:",id);
+        // console.log("id:",id);
         if (err !== null) {
             console.log(err.stack);
             sendResult(null);
         } else if (res == null) {
             sendResult(null);
         }else{
-            console.log("res:", res);
+            // console.log("res:", res);
             const symptom = SymptomsDAO.toObj(res);
             // symptoms.id = res.id;
             sendResult(symptom);

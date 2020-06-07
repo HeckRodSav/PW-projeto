@@ -39,13 +39,24 @@ function testFindById() {
     });
 }
 
+function testListAll() {
+    dbConnect.connect(() => {
+        console.log("testListAll:");
+        model.DiseasesDAO.listAll((result) => {
+            console.log('Result.L: ', result.lenght);
+            console.log('Result.T: ', typeof(result));
+            console.log('Result: ', result);
+        });
+    });
+}
+
 // testFindBySymptom();
 
-testFindById();
+testListAll();
 
-// process.on('exit', (code) => {
-//     console.log(`\nServer exiting with code ${code}`);
-//     dbConnect.disconnect(() => {
-//         console.log('Database disconnected');
-//     });
-// });
+process.on('exit', (code) => {
+    console.log(`\nServer exiting with code ${code}`);
+    dbConnect.disconnect(() => {
+        console.log('Database disconnected');
+    });
+});

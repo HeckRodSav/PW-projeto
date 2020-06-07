@@ -3,51 +3,81 @@
 const symptomModel = require('../models/symptom-model.js');
 const diseaseModel = require('../models/disease-model.js');
 
-
 // var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '' , symptomId: '', symptomNames: '' };
-const first_symptoms = ["S127", "S208", "S122", "S124", "S073", "S088", "S308", "S291", "S016", "S286", "S155"];
+const first_symptoms = ["S127", "S208", "S122", "S124", "S073", "S088", "S308", "S291", "S286", "S154"];
+
+exports.nextQuestion = (sessionSymptoms, deniedSymptoms, queueSymptoms, sendResult) => {
+    console.log("sessionSymptoms:", sessionSymptoms);
+    console.log("deniedSymptoms:", deniedSymptoms);
+    diseaseModel.DiseasesDAO.preliminaryResult(sessionSymptoms, ret => {
+        var choosen = null;
+        for (var i in ret) {
+            for (var j in ret[i].symptoms) {
+                if (!sessionSymptoms.includes(ret[i].symptoms[j]) && !queueSymptoms.includes(ret[i].symptoms[j]) && !deniedSymptoms.includes(ret[i].symptoms[j])) choosen = ret[i].symptoms[j];
+                if (choosen) break;
+            }
+            if (choosen) break;
+        }
+        if (choosen) sendResult(choosen);
+        else {
+            symptomModel.SymptomsDAO.listAll(symptomsist => {
+                for (var k in symptomsist) {
+                    var temp = symptomsist[k].id;
+                    if (!sessionSymptoms.includes(temp) && !queueSymptoms.includes(temp) && !deniedSymptoms.includes(temp)) choosen = temp;
+                    if (choosen) break;
+                }
+                sendResult(choosen);
+            })
+        }
+    });
+};
 
 exports.Answer = (req, res) => {
     var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
     options['page'] = 'layouts/question';
     options['question'] = 'symptom';
 
-    console.log('body:', req.body);
+    // console.log('body:', req.body);
 
     //primeiro, puxa o que tem guardado na localstorage
     let storageContent = req.session.healthweb;
+    if (!storageContent.max){
+        storageContent.max = 309;
+        symptomModel.SymptomsDAO.listAll(list => {
+            storageContent.max = list.length + 5;
+        });
+    }
+    if (!storageContent.count) storageContent.count = 1;
 
-    console.log('storageContent before:', storageContent);
+    options.percent = Math.round(100 * storageContent.count / storageContent.max);
 
-    let aux = true;
+    // console.log('storageContent before:', storageContent);
+
+    let aux = false;
 
     if (!("sex" in storageContent) && !req.body.sex) {
         options['question'] = 'sex';
         options['title'] = 'Sexo biológico*.';
         options['footnote'] = 'sex_footnote';
-        options.next = 'age';
-        options.percent = 5;
+        aux = true;
     } else {
         if (req.body.sex) storageContent.sex = req.body.sex;
         if (!("age" in storageContent) && !req.body.age) {
             options['question'] = 'age';
             options['title'] = 'Sua idade em anos.';
-            options.next = 'height';
-            options.percent = 10;
+            aux = true;
         } else {
             if (req.body.age) storageContent.age = req.body.age;
             if (!("height" in storageContent) && !req.body.height) {
                 options['question'] = 'height';
                 options['title'] = 'Sua altura em m.';
-                options.next = 'weight';
-                options.percent = 15;
+                aux = true;
             } else {
                 if (req.body.height) storageContent.height = req.body.height;
                 if (!("weight" in storageContent) && !req.body.weight) {
                     options['question'] = 'weight';
                     options['title'] = 'Seu peso em kg.';
-                    options.next = 'symptom';
-                    options.percent = 20;
+                    aux = true;
                 } else {
                     if (req.body.weight) storageContent.weight = req.body.weight;
                     if (!storageContent.symptomsList) storageContent.symptomsList = []
@@ -56,47 +86,51 @@ exports.Answer = (req, res) => {
 
                     if (req.body.idSymptom) {
 
-                        symptomModel.SymptomsDAO.findById(req.body.idSymptom, userSymptom => {
+                        if (req.body.answer == "s") storageContent.symptomsList.push(req.body.idSymptom);
+                        else storageContent.negativeSymptomsList.push(req.body.idSymptom);
 
-                            console.log("req.body.idSymptom", req.body.idSymptom);
-                            console.log("userSymptom", userSymptom);
+                        diseaseModel.DiseasesDAO.preliminaryResult(storageContent.symptomsList, parcialResult => {
 
-                            if (req.body.answer == "s") storageContent.symptomsList.push(userSymptom.id);
-                            else storageContent.negativeSymptomsList.push(userSymptom.id);
+                            let preliminary_aux = true;
 
-                            //make the decision to continue asking or give a disease
-                            let parcialResult = diseaseModel.DiseasesDAO.preliminaryResult(storageContent.symptomsList);
+                            if(parcialResult) if(parcialResult.length > 0) {
+                                if (parcialResult[0].value >= 80) { //make the decision to continue asking or give a disease
+                                preliminary_aux = false;
+                                res.redirect('/result'); //go to result page
+                                res.end();
+                                }
+                                // else console.log("[0].v:", parcialResult[0].value);
+                            }
+                            if (preliminary_aux) {
+                                // console.log("entrou no else")
+                                console.log('storageContent before:', storageContent);
+                                // adiciona uma nova questão na lista a perguntar
+                                exports.nextQuestion(storageContent.symptomsList, storageContent.negativeSymptomsList, storageContent.questionList, nextSymptom => {
 
-                            if (parcialResult[0].value >= 80) res.redirec('/result'); //go to result page
+                                    storageContent.questionList.push(nextSymptom);
 
-                            //adiciona uma nova questão na lista a perguntar
-                            req.session.healthweb.questionList.push(diseaseModel.DiseasesDAO.nextQuestion(req.symptomsList, req.session.healthweb.negativeSymptomsList));
-
-                            let nextQuestionToPresent = symptomModel.SymptomsDAO.findById(req.session.healthweb.questionList.shift());
-
-                            options['question'] = 'symptom';
-                            options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
-                            options.next = 'results';
-                            options.percent = 25;
-                            options.symptomId = nextQuestionToPresent.id;
-
+                                    symptomModel.SymptomsDAO.findById(storageContent.questionList.shift(), nextQuestionToPresent => {
+                                        // options['question'] = 'symptom';
+                                        options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
+                                        options.symptomId = nextQuestionToPresent.id;
+                                        storageContent.count++;
+                                        res.render('./layouts/default', options);
+                                        res.end();
+                                    });
+                                });
+                            }
                         });
                     } else {
-                        aux = false;
-                        req.session.healthweb.questionList = first_symptoms;
-                        // console.log('questionlist', req.session.healthweb.questionList);
-                        let coisa = req.session.healthweb.questionList.shift()
-                        console.log('coisa:', coisa, typeof (coisa));
-                        // console.log('the list without the element', req.session.healthweb.questionList);
-
-
-                        symptomModel.SymptomsDAO.findById(coisa, nextQuestionToPresent => {
-                            console.log('nextquestion', nextQuestionToPresent);
-
+                        storageContent.questionList = first_symptoms;
+                        // console.log('questionlist', storageContent.questionList);
+                        let temp = storageContent.questionList.shift()
+                        // console.log('temp:', temp, typeof (temp));
+                        // console.log('the list without the element', storageContent.questionList);
+                        symptomModel.SymptomsDAO.findById(temp, nextQuestionToPresent => {
+                            // console.log('nextquestion', nextQuestionToPresent);
                             options['title'] = 'Você apresentou ' + nextQuestionToPresent.name + '?';
-                            options.next = 'results';
-                            options.percent = 25;
                             options.symptomId = nextQuestionToPresent.id;
+                            storageContent.count++;
                             res.render('./layouts/default', options);
                             res.end();
                         });
@@ -107,33 +141,33 @@ exports.Answer = (req, res) => {
         }
     }
     if (aux) {
+        storageContent.count++;
         res.render('./layouts/default', options);
-
         res.end();
     }
-    console.log('storageContent after:', storageContent);
 };
 
 exports.resultsPage = (req, res) => {
     let storageContent = req.session.healthweb;
 
-    if (!storageContent.symptomsList) res.redirec('/');
+    if (!storageContent.symptomsList) res.redirect('/');
 
-    let parcialResult = diseaseModel.preliminaryResult(storageContent.symptomsList).slice(0, 5); // take
-
-    var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
-    console.log("questionnaire-controller:\\results");
-    options['page'] = 'layouts/entitled';
-    options['title'] = 'Resultados';
-    options['content'] = 'results';
-    options.modal = 'results_modal';
-    options.diseases = parcialResult;
-    // options.diseases = [
-    //     { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral" },
-    //     { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral" },
-    //     { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral" },
-    //     { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral" }
-    // ];
-    // options.diseases = LISTA DE DOENÇAS AQUI
-    res.render('./layouts/default', options);
+    diseaseModel.DiseasesDAO.preliminaryResult(storageContent.symptomsList, parcialResult => {
+        parcialResult = parcialResult.slice(0, 5); // take
+        var options = { page: '', modal: '', title: '', next: '', footnote: '', content: '', percent: 0, diseases: [], raw: '', symptomId: '', symptomNames: '' };
+        console.log("questionnaire-controller:\\results");
+        options['page'] = 'layouts/entitled';
+        options['title'] = 'Resultados';
+        options['content'] = 'results';
+        options.modal = 'results_modal';
+        options.diseases = parcialResult;
+        // options.diseases = [
+        //     { name: "Doença X", value: "90", id: "X_disease", information: "X é uma doença viral" },
+        //     { name: "Doença Y", value: "80", id: "Y_disease", information: "Y é uma doença viral" },
+        //     { name: "Doença Z", value: "70", id: "Z_disease", information: "Z é uma doença viral" },
+        //     { name: "Doença W", value: "60", id: "W_disease", information: "W é uma doença viral" }
+        // ];
+        // options.diseases = LISTA DE DOENÇAS AQUI
+        res.render('./layouts/default', options);
+    });
 };
